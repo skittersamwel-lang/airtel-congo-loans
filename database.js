@@ -4,7 +4,7 @@ let client;
 let db;
 
 // Database and collections
-const DB_NAME = 'airtel_loan_platform';
+const DB_NAME = 'airtel_loan_platform1';
 const COLLECTIONS = {
     ADMINS: 'admins',
     APPLICATIONS: 'applications'
