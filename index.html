@@ -152,8 +152,8 @@
     padding: 20px 0 16px 0;
   }
   .brand-icon-wrap {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     background: #ffffff;
     border-radius: 18px;
     display: flex;
@@ -161,11 +161,13 @@
     justify-content: center;
     box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     margin-bottom: 12px;
+    overflow: hidden;
+    padding: 6px;
   }
-  .brand-icon-wrap svg {
-    width: 38px;
-    height: 38px;
-    fill: var(--brand-red);
+  .brand-icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .brand-title {
     color: #ffffff;
@@ -712,7 +714,7 @@
 
   /* BRAND LOGOS & HELPERS */
   .hp-logo-inline, .hp-logo-sm { display: flex; align-items: center; gap: 8px; }
-  .hp-logo-sm svg { width: 26px; height: 26px; fill: #ffffff; }
+  .hp-logo-sm img { width: 26px; height: 26px; object-fit: contain; }
   .hp-logo-inline .brand, .hp-logo-sm .brand { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
 </style>
 </head>
@@ -738,7 +740,7 @@
 <div id="page-landing" class="page">
   <div class="brand-header">
     <div class="brand-icon-wrap">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
     </div>
     <h1 class="brand-title">Airtel Money</h1>
     <p class="brand-subtitle">Prêts intelligents & Crédits instantanés RDC</p>
@@ -816,7 +818,7 @@
   <nav class="navbar">
     <a class="nav-left" onclick="goTo('page-landing')">← Retour</a>
     <div class="hp-logo-sm">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
       <div class="brand">Airtel Money</div>
     </div>
     <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
@@ -847,7 +849,7 @@
   <nav class="navbar">
     <a class="nav-left" onclick="goTo('page-step1')">← Retour</a>
     <div class="hp-logo-sm">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
       <div class="brand">Airtel Money</div>
     </div>
     <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
@@ -886,7 +888,7 @@
   <nav class="navbar">
     <a class="nav-left" onclick="goTo('page-step2')">← Retour</a>
     <div class="hp-logo-sm">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
       <div class="brand">Airtel Money</div>
     </div>
     <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
@@ -938,7 +940,7 @@
 <div id="page-login" class="page">
   <div class="brand-header">
     <div class="brand-icon-wrap">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
     </div>
     <h1 class="brand-title">Airtel Money</h1>
     <p class="brand-subtitle">Connexion à votre espace client</p>
@@ -977,7 +979,7 @@
   <nav class="navbar">
     <a class="nav-left" onclick="goTo('page-login')">← Retour</a>
     <div class="hp-logo-sm">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <img src="images/airtel-logo.png" alt="Airtel Logo">
       <div class="brand">Airtel Money</div>
     </div>
     <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
@@ -1655,7 +1657,7 @@
         setTimeout(() => {
             popup.classList.remove("show");
         }, 2500);
-    }⁸
+    }
 
     setTimeout(displayPopup, 2000);
     setInterval(displayPopup, 3500);
